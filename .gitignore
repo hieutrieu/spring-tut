@@ -1,0 +1,6 @@
+/vendor
+/config/database.php
+/public/.htaccess
+/temp
+/storage
+.idea/*

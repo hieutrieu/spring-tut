@@ -1,0 +1,579 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "f04d26cccd4ebedffdf280ef1a5358fb",
+    "content-hash": "d3176704106368ab8b80825300f42c59",
+    "packages": [
+        {
+            "name": "cinnamonlab/acl",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cinnamonlab/acl.git",
+                "reference": "e65a099168a1a50234bbea7e23eac0cbbf55549e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cinnamonlab/acl/zipball/e65a099168a1a50234bbea7e23eac0cbbf55549e",
+                "reference": "e65a099168a1a50234bbea7e23eac0cbbf55549e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Framework\\ACL\\": "src/Framework/ACL/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Hieu Trieu",
+                    "email": "mrhieutrieu@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The Simple Framework acl Wrapper",
+            "keywords": [
+                "framework"
+            ],
+            "time": "2015-10-02 02:29:46"
+        },
+        {
+            "name": "cinnamonlab/blade",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cinnamonlab/blade.git",
+                "reference": "c2009818f0d8efcb17a59d066d2070a60b99187b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cinnamonlab/blade/zipball/c2009818f0d8efcb17a59d066d2070a60b99187b",
+                "reference": "c2009818f0d8efcb17a59d066d2070a60b99187b",
+                "shasum": ""
+            },
+            "require": {
+                "cinnamonlab/framework": "dev-master",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Framework\\Blade\\": "src/Framework/Blade/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Hajime Hotta",
+                    "email": "hotta@fastbid.asia",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The Simple Framework.",
+            "keywords": [
+                "framework"
+            ],
+            "time": "2015-08-17 12:12:35"
+        },
+        {
+            "name": "cinnamonlab/db",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cinnamonlab/db.git",
+                "reference": "e6e58bda941e82f132d8066a364292037944d2ef"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cinnamonlab/db/zipball/e6e58bda941e82f132d8066a364292037944d2ef",
+                "reference": "e6e58bda941e82f132d8066a364292037944d2ef",
+                "shasum": ""
+            },
+            "require": {
+                "cinnamonlab/framework": "dev-master",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Framework\\DB\\": "src/Framework/DB/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Hajime Hotta",
+                    "email": "hotta@fastbid.asia",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The Simple Framework PDO Wrapper",
+            "keywords": [
+                "framework"
+            ],
+            "time": "2015-11-16 02:54:05"
+        },
+        {
+            "name": "cinnamonlab/framework",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cinnamonlab/framework.git",
+                "reference": "03909a4c82673d4ad11c13e5aaf81adea030ce80"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cinnamonlab/framework/zipball/03909a4c82673d4ad11c13e5aaf81adea030ce80",
+                "reference": "03909a4c82673d4ad11c13e5aaf81adea030ce80",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Framework\\": "src/Framework/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Hajime Hotta",
+                    "email": "hotta@fastbid.asia",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The Simple Framework.",
+            "keywords": [
+                "framework"
+            ],
+            "time": "2015-11-02 08:49:08"
+        },
+        {
+            "name": "cinnamonlab/log",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cinnamonlab/log.git",
+                "reference": "79454128f9f517818e8648cd5705b36a17039742"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cinnamonlab/log/zipball/79454128f9f517818e8648cd5705b36a17039742",
+                "reference": "79454128f9f517818e8648cd5705b36a17039742",
+                "shasum": ""
+            },
+            "require": {
+                "cinnamonlab/framework": "dev-master",
+                "monolog/monolog": "@stable",
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Framework\\Log\\": "src/Framework/Log/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2015-08-13 04:52:50"
+        },
+        {
+            "name": "cinnamonlab/session",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cinnamonlab/session.git",
+                "reference": "88a9c13d43cda51fdbec11e429468614da7485db"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cinnamonlab/session/zipball/88a9c13d43cda51fdbec11e429468614da7485db",
+                "reference": "88a9c13d43cda51fdbec11e429468614da7485db",
+                "shasum": ""
+            },
+            "require": {
+                "cinnamonlab/db": "dev-master",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Framework\\Session\\": "src/Framework/Session/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "none"
+            ],
+            "authors": [
+                {
+                    "name": "Hieu Trieu",
+                    "email": "mrhieutrieu@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Session",
+            "keywords": [
+                "framework"
+            ],
+            "time": "2015-12-22 05:15:03"
+        },
+        {
+            "name": "hieutrieu/flash",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hieutrieu/flash.git",
+                "reference": "9da5742cc8abb997833f5bc12a86378995236306"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hieutrieu/flash/zipball/9da5742cc8abb997833f5bc12a86378995236306",
+                "reference": "9da5742cc8abb997833f5bc12a86378995236306",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Framework\\Flash\\": "src/Framework/Flash/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "none"
+            ],
+            "authors": [
+                {
+                    "name": "Hieu Trieu",
+                    "email": "mrhieutrieu@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "flash",
+            "keywords": [
+                "framework"
+            ],
+            "time": "2015-12-22 05:13:15"
+        },
+        {
+            "name": "league/csv",
+            "version": "8.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/csv.git",
+                "reference": "63f2fc3598a4dbbc906c9db9d6f04bc7f72b0645"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/csv/zipball/63f2fc3598a4dbbc906c9db9d6f04bc7f72b0645",
+                "reference": "63f2fc3598a4dbbc906c9db9d6f04bc7f72b0645",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "fabpot/php-cs-fixer": "^1.9",
+                "phpunit/phpunit": "^4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "8.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Csv\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ignace Nyamagana Butera",
+                    "email": "nyamsprod@gmail.com",
+                    "homepage": "https://github.com/nyamsprod/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Csv data manipulation made easy in PHP",
+            "homepage": "http://csv.thephpleague.com",
+            "keywords": [
+                "csv",
+                "export",
+                "filter",
+                "import",
+                "read",
+                "write"
+            ],
+            "time": "2016-05-30 09:35:50"
+        },
+        {
+            "name": "monolog/monolog",
+            "version": "1.17.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Seldaek/monolog.git",
+                "reference": "bee7f0dc9c3e0b69a6039697533dca1e845c8c24"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/bee7f0dc9c3e0b69a6039697533dca1e845c8c24",
+                "reference": "bee7f0dc9c3e0b69a6039697533dca1e845c8c24",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "psr/log": "~1.0"
+            },
+            "provide": {
+                "psr/log-implementation": "1.0.0"
+            },
+            "require-dev": {
+                "aws/aws-sdk-php": "^2.4.9",
+                "doctrine/couchdb": "~1.0@dev",
+                "graylog2/gelf-php": "~1.0",
+                "jakub-onderka/php-parallel-lint": "0.9",
+                "php-console/php-console": "^3.1.3",
+                "phpunit/phpunit": "~4.5",
+                "phpunit/phpunit-mock-objects": "2.3.0",
+                "raven/raven": "^0.13",
+                "ruflin/elastica": ">=0.90 <3.0",
+                "swiftmailer/swiftmailer": "~5.3",
+                "videlalvaro/php-amqplib": "~2.4"
+            },
+            "suggest": {
+                "aws/aws-sdk-php": "Allow sending log messages to AWS services like DynamoDB",
+                "doctrine/couchdb": "Allow sending log messages to a CouchDB server",
+                "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
+                "ext-mongo": "Allow sending log messages to a MongoDB server",
+                "graylog2/gelf-php": "Allow sending log messages to a GrayLog2 server",
+                "php-console/php-console": "Allow sending log messages to Google Chrome",
+                "raven/raven": "Allow sending log messages to a Sentry server",
+                "rollbar/rollbar": "Allow sending log messages to Rollbar",
+                "ruflin/elastica": "Allow sending log messages to an Elastic Search server",
+                "videlalvaro/php-amqplib": "Allow sending log messages to an AMQP server using php-amqplib"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.16.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Monolog\\": "src/Monolog"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jordi Boggiano",
+                    "email": "j.boggiano@seld.be",
+                    "homepage": "http://seld.be"
+                }
+            ],
+            "description": "Sends your logs to files, sockets, inboxes, databases and various web services",
+            "homepage": "http://github.com/Seldaek/monolog",
+            "keywords": [
+                "log",
+                "logging",
+                "psr-3"
+            ],
+            "time": "2015-10-14 12:51:02"
+        },
+        {
+            "name": "phpoffice/phpexcel",
+            "version": "1.8.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPOffice/PHPExcel.git",
+                "reference": "372c7cbb695a6f6f1e62649381aeaa37e7e70b32"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
+                "reference": "372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
+                "shasum": ""
+            },
+            "require": {
+                "ext-xml": "*",
+                "ext-xmlwriter": "*",
+                "php": ">=5.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PHPExcel": "Classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Maarten Balliauw",
+                    "homepage": "http://blog.maartenballiauw.be"
+                },
+                {
+                    "name": "Mark Baker"
+                },
+                {
+                    "name": "Franck Lefevre",
+                    "homepage": "http://blog.rootslabs.net"
+                },
+                {
+                    "name": "Erik Tilt"
+                }
+            ],
+            "description": "PHPExcel - OpenXML - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
+            "homepage": "http://phpexcel.codeplex.com",
+            "keywords": [
+                "OpenXML",
+                "excel",
+                "php",
+                "spreadsheet",
+                "xls",
+                "xlsx"
+            ],
+            "time": "2015-05-01 07:00:55"
+        },
+        {
+            "name": "predis/predis",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nrk/predis.git",
+                "reference": "84060b9034d756b4d79641667d7f9efe1aeb8e04"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nrk/predis/zipball/84060b9034d756b4d79641667d7f9efe1aeb8e04",
+                "reference": "84060b9034d756b4d79641667d7f9efe1aeb8e04",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "suggest": {
+                "ext-curl": "Allows access to Webdis when paired with phpiredis",
+                "ext-phpiredis": "Allows faster serialization and deserialization of the Redis protocol"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Predis\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniele Alessandri",
+                    "email": "suppakilla@gmail.com",
+                    "homepage": "http://clorophilla.net"
+                }
+            ],
+            "description": "Flexible and feature-complete PHP client library for Redis",
+            "homepage": "http://github.com/nrk/predis",
+            "keywords": [
+                "nosql",
+                "predis",
+                "redis"
+            ],
+            "time": "2015-07-30 18:34:15"
+        },
+        {
+            "name": "psr/log",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/log.git",
+                "reference": "fe0936ee26643249e916849d48e3a51d5f5e278b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/fe0936ee26643249e916849d48e3a51d5f5e278b",
+                "reference": "fe0936ee26643249e916849d48e3a51d5f5e278b",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Psr\\Log\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for logging libraries",
+            "keywords": [
+                "log",
+                "psr",
+                "psr-3"
+            ],
+            "time": "2012-12-21 11:40:51"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "cinnamonlab/framework": 20,
+        "cinnamonlab/db": 20,
+        "cinnamonlab/acl": 20,
+        "cinnamonlab/session": 20,
+        "cinnamonlab/blade": 20,
+        "cinnamonlab/log": 20,
+        "hieutrieu/flash": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=5.5.5"
+    },
+    "platform-dev": []
+}
