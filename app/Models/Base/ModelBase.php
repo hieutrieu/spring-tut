@@ -65,7 +65,22 @@ class ModelBase
         $result = $this->db->select($sql);
         return $result;
     }
-
+	
+	public function getOnceItem($condition)
+    {
+        if ($condition != '') {
+            $sql = $this->baseQuery . " `{$this->tableName}` WHERE " . $condition;
+        } else {
+            $sql = $this->baseQuery . " `{$this->tableName}`";
+        }
+        $objects = $this->db->select($sql);
+		if (count($objects) > 0) {
+            return (object)reset($objects);
+        } else {
+            return null;
+        }
+    }
+	
     /**
      * @param $fields : array of field names and value
      * @return : array of objects

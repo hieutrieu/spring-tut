@@ -65,6 +65,7 @@ class UsersController extends AdminController
             $conditions[] = "DATE(called_at) >= '{$conditionDate[0]}'";
             $conditions[] = "DATE(called_at) <= '{$conditionDate[1]}'";
         }
+		
         $condition = implode(' AND ', $conditions);
         $items = CallHistory::getInstance()->getAll($condition, $page, 20, 'called_at DESC');
         $currentUser = Users::getInstance()->getOneObjectByField(['id' => $id]);

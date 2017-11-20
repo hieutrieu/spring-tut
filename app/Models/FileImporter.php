@@ -81,7 +81,7 @@ class FileImporter
                 $calledAt=$dateTimeConnect_key===false?"":$row[$dateTimeConnect_key];
                 $duration=$duration_key===false?"0":$row[$duration_key];
 				$email=$email_key===false?" ":$row[$email_key];
-                $currentUser=Users::getInstance()->getOneObjectByField(array("phone_number"=>$fromNumber, 'status' => Users::STATUS_ACTIVE));
+				$currentUser=Users::getInstance()->getOnceItem("phone_number LIKE '%($fromNumber)%'");
 				if(!is_object($currentUser)) {
 					try {
 						if($email != '') {
@@ -95,7 +95,7 @@ class FileImporter
 							);
 							$checkInsert = Users::getInstance()->insert($userData);
 							if($checkInsert) {
-								$currentUser=Users::getInstance()->getOneObjectByField(array("phone_number"=>$fromNumber, 'status' => Users::STATUS_ACTIVE));
+								$currentUser=Users::getInstance()->getOneObjectByField(array("phone_number"=>$fromNumber));
 							}
 						}
 					} catch (\Exception $e) {}
