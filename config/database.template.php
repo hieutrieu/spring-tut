@@ -5,18 +5,18 @@ return array(
 
     "read" => array(
         "driver"    => "mysql",
-        "host"      => "cinnamon-db.cedxegtvwyet.ap-northeast-1.rds.amazonaws.com",
-        "db"        => "cinnamon_marketing",
-        "user"      => "cinnamon",
-        "pass"      => "givemeseconds",
+        "host"      => "",
+        "db"        => "",
+        "user"      => "",
+        "pass"      => "",
         "write"     => "write"
     ),
     "write" => array(
         "driver"    => "mysql",
-        "host"      => "cinnamon-db.cedxegtvwyet.ap-northeast-1.rds.amazonaws.com",
-        "db"        => "cinnamon_marketing",
-        "user"      => "cinnamon",
-        "pass"      => "givemeseconds",
+        "host"      => "",
+        "db"        => "",
+        "user"      => "",
+        "pass"      => "",
     ),
 );
 

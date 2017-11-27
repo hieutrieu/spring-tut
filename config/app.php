@@ -3,7 +3,7 @@ return array(
     'debug' => true,
     'site_name' => 'Telephone Cost',
     'site_name_short' => 'Telephone',
-    'scanDir' => 'C:\\Users\\Administrator\\Desktop\\log-bill',
+    'scanDir' => 'D:\projects\newteam\spring-tut\test',
 	'limit_scan_file' => 1,
 	'blockPrices' => array(
 		'mobilephone' => array(

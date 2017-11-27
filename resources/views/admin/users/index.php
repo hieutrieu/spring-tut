@@ -36,11 +36,11 @@
                 <tr>
                     <th class="text-center small-col" width="40px">#</th>
                     <th class="text-left">Display Name</th>
-                    <th class="text-left" width="15%">Email</th>
                     <th class="text-left" width="10%">Phone Number</th>
                     <th class="text-right" width="15%">Limited Cost (VND)</th>
                     <th class="text-right" width="15%">Current Cost (VND)</th>
                     <th class="text-left" width="10%">Group</th>
+                    <th class="text-left" width="15%">Email</th>
                     <th class="text-center action" style="width:140px">Action</th>
                 </tr>
                 </thead>
@@ -50,16 +50,16 @@
                     <td class="text-center">{{++$index}}</td>
                     <td class="text-left">
                         <a href="{{url('admin/users/info/'.$value['id'])}}" class="{{$value['id']}}">
-                            {{$value['name']}}
+                            {{$value['name']}} - {{$value['phone_number']}}
                         </a>
                     </td>
-                    <td class="text-left">{{$value['email']}}</td>
                     <td class="text-left middle">{{$value['phone_number']}}</td>
                     <td class="text-right middle">{{App\Libraries\Helper::formatCurrency($value['monthly_limited_cost'],2,0)}}</td>
                     <td class="text-right middle">{{App\Libraries\Helper::formatCurrency($value['monthly_used_cost'],2,0)}}</td>
                     <td class="text-left middle">
                         {{isset($groupNames[$value['group_id']])?$groupNames[$value['group_id']]:''}}
                     </td>
+                    <td class="text-left">{{$value['email']}}</td>
                     <td class="text-center middle">
                         <div class="btn-group-xs">
                             <a href="{{url('admin/users/edit/'.$value['id'])}}"

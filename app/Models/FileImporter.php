@@ -81,25 +81,24 @@ class FileImporter
                 $calledAt=$dateTimeConnect_key===false?"":$row[$dateTimeConnect_key];
                 $duration=$duration_key===false?"0":$row[$duration_key];
 				$email=$email_key===false?" ":$row[$email_key];
-				$currentUser=Users::getInstance()->getOnceItem("phone_number LIKE '%($fromNumber)%'");
+				$currentUser=Users::getInstance()->getOneObjectByField(array('username' => $username, 'phone_number' => $fromNumber));
+//				$currentUser=Users::getInstance()->getOnceItem("phone_number LIKE '%($fromNumber)%'");
 				if(!is_object($currentUser)) {
 					try {
-						if($email != '') {
-							$userData = array (
-								"name"=>$username != '' ? $username : ($email != '' ? $email : $fromNumber),
-								"username"=>$username != '' ? $username : ($email != '' ? $email : $fromNumber),
-								"phone_number"=>$fromNumber,
-								"email"=>$email,
-								"monthly_limited_cost"=>0,
-								"created_at"=>array('now()')
-							);
-							$checkInsert = Users::getInstance()->insert($userData);
-							if($checkInsert) {
-								$currentUser=Users::getInstance()->getOneObjectByField(array("phone_number"=>$fromNumber));
-							}
+						$userData = array (
+							"name"=>$username != '' ? $username : 'Autonomous',
+							"username"=>$username,
+							"phone_number"=>$fromNumber,
+							"email"=>$email,
+							"monthly_limited_cost"=>0,
+							"created_at"=>array('now()')
+						);
+						$checkInsert = Users::getInstance()->insert($userData);
+						if($checkInsert) {
+                            $currentUser=Users::getInstance()->getOneObjectByField(array('username' => $username, 'phone_number' => $fromNumber));
+//							$currentUser=Users::getInstance()->getOneObjectByField(array("phone_number"=>$fromNumber));
 						}
 					} catch (\Exception $e) {}
-
 				}
 				$actualPrice = $this->getPrice($toNumber, $duration);
 				$calledAt = date('Y-m-d h:i:s', $calledAt != '' ? $calledAt : 0);
