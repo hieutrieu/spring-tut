@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 1. Localhost
+Source Server         : localhost
 Source Server Version : 50624
-Source Host           : 127.0.0.1:3306
+Source Host           : localhost:3306
 Source Database       : ost_telephone_cost
 
 Target Server Type    : MYSQL
 Target Server Version : 50624
 File Encoding         : 65001
 
-Date: 2016-07-04 14:43:46
+Date: 2017-11-27 12:03:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,12 +26,12 @@ CREATE TABLE `call_histories` (
   `from_phone_number` varchar(255) CHARACTER SET utf8 NOT NULL,
   `to_phone_number` varchar(255) CHARACTER SET utf8 NOT NULL,
   `duration` int(11) NOT NULL COMMENT 'number seconds',
-  `cost` decimal(11,0) NOT NULL,
+  `cost` decimal(11,2) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `called_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of call_histories
@@ -50,7 +50,7 @@ CREATE TABLE `file_scans` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1870 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of file_scans
@@ -75,7 +75,7 @@ CREATE TABLE `group` (
 -- ----------------------------
 -- Records of group
 -- ----------------------------
-INSERT INTO `group` VALUES ('1', '4656', '', '0000-00-00 00:00:00', '2016-06-29 13:41:58', '1000', '500', '1');
+INSERT INTO `group` VALUES ('1', 'default', '', '0000-00-00 00:00:00', '2016-07-06 09:39:42', '1000', '500', '1');
 
 -- ----------------------------
 -- Table structure for log
@@ -83,10 +83,10 @@ INSERT INTO `group` VALUES ('1', '4656', '', '0000-00-00 00:00:00', '2016-06-29 
 DROP TABLE IF EXISTS `log`;
 CREATE TABLE `log` (
   `id` int(11) NOT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `event` varchar(45) NOT NULL,
+  `event` enum('error','info') NOT NULL DEFAULT 'info',
   `log` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -104,7 +104,7 @@ CREATE TABLE `user` (
   `username` varchar(50) NOT NULL DEFAULT '',
   `password` varchar(50) NOT NULL DEFAULT '',
   `email` varchar(100) NOT NULL DEFAULT '',
-  `phone_number` varchar(11) NOT NULL,
+  `phone_number` varchar(20) NOT NULL,
   `address` varchar(255) DEFAULT NULL,
   `group_id` int(11) DEFAULT NULL,
   `permission` enum('admin','group','user') NOT NULL DEFAULT 'user',
@@ -112,13 +112,13 @@ CREATE TABLE `user` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `monthly_limited_cost` decimal(15,2) NOT NULL DEFAULT '0.00',
   `monthly_used_cost` decimal(15,2) NOT NULL DEFAULT '0.00',
+  `status` enum('active','inactive','delete') DEFAULT 'active',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`),
-  KEY `userpass` (`username`,`password`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+  KEY `userpass` (`username`,`password`),
+  KEY `username` (`username`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=155 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('20', 'Trieu Trung Hieu', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin@gmail.com', '', null, null, 'admin', '0000-00-00 00:00:00', '2016-01-14 10:02:20', '0.00', '0.00');
-INSERT INTO `user` VALUES ('21', 'hiepdh', 'hiepdh', '21232f297a57a5a743894a0e4a801fc3', 'hiepdh@saobacdau.vn', '4656', '22 Hoang hoa Tham', '1', 'group', '0000-00-00 00:00:00', '2016-07-04 14:43:11', '100000.00', '100000.00');
+INSERT INTO `user` VALUES ('20', 'Trieu Trung Hieu', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin@gmail.com', '', null, null, 'admin', '0000-00-00 00:00:00', '2017-11-27 12:02:08', '0.00', '0.00', 'active');
