@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Libraries\File;
 use App\Models\FileImporter;
 use App\Models\FileScan;
+use App\Libraries\BackupFile;
 use App\Models\Logs;
 use Exception;
 
@@ -82,6 +83,7 @@ class ScanController
 				$result = FileImporter::getInstance()->process($file);
 				if ($result == true) {
 					FileScan::getInstance()->delete(array("id" => $file["id"]));
+					BackupFile::getInstance(config('app.scanDir'))->backup_file($file['filename']);
 					unlink($file['path_file']);
 				} else {
 					FileScan::getInstance()->update(array('status' => FileScan::STATUS_FAILED),array("id" => $file["id"]));

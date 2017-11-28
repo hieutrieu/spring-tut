@@ -66,11 +66,11 @@ class AdminController {
                 'label' => 'Users Manager',
                 'icon' => 'user'
             ),
-            array(
-                'path' => 'admin/groups',
-                'label' => 'Groups Manager',
-                'icon' => 'users'
-            ),
+//            array(
+//                'path' => 'admin/groups',
+//                'label' => 'Groups Manager',
+//                'icon' => 'users'
+//            ),
             array(
                 'path' => 'admin/config',
                 'label' => 'Price Manager',

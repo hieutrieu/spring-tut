@@ -32,7 +32,7 @@ class FileScan extends ModelBase
 
     public function getFileScaned($limit) {
         $status = FileScan::STATUS_WAITING;
-        $sql = "SELECT id , path_file
+        $sql = "SELECT id , path_file, filename
                 FROM `{$this->tableName}`
                 WHERE `status` = '{$status}'
                 ORDER BY id ASC 
