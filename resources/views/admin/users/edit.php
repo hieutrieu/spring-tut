@@ -185,22 +185,22 @@
                         }
                     }
                 },
-                email: {
-                    message: 'The Email is not valid',
-                    validators: {
-                        notEmpty: {
-                            message: 'The Email is required'
-                        }
-                    }
-                },
-                user_name: {
-                    message: 'The User name is not valid',
-                    validators: {
-                        notEmpty: {
-                            message: 'The User name is required'
-                        }
-                    }
-                },
+//                email: {
+//                    message: 'The Email is not valid',
+//                    validators: {
+//                        notEmpty: {
+//                            message: 'The Email is required'
+//                        }
+//                    }
+//                },
+//                user_name: {
+//                    message: 'The User name is not valid',
+//                    validators: {
+//                        notEmpty: {
+//                            message: 'The User name is required'
+//                        }
+//                    }
+//                },
                 password: {
                     message: 'The Password is not valid',
                     validators: {
