@@ -27,6 +27,7 @@ Route::action('GET', '/admin/groups/report/{id}', 'Admin\GroupsController@report
 
 Route::action('GET', '/admin/users/admin', 'Admin\UsersController@admin');
 Route::action('GET', '/admin/users', 'Admin\UsersController@index');
+Route::action('GET', '/admin/users/export', 'Admin\UsersController@export_index');
 Route::action('GET', '/admin/users/edit/{id}', 'Admin\UsersController@edit');
 Route::action('POST', '/admin/users/save', 'Admin\UsersController@save');
 Route::action('GET', '/admin/users/delete/{id}', 'Admin\UsersController@delete');

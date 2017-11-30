@@ -20,7 +20,8 @@
                         <div class="input-group input-group-sm col-xs-10 pull-left">
                             <input type="text" value="{{$search}}" name="search" class="form-control" placeholder="Enter Name or Phone to Search">
                         <span class="input-group-btn">
-                          <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"></span> Search</button>
+                            <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"></span> Search</button>
+                            <a class="btn btn-warning" href="{{url('admin/users/export?search='.$search)}}"><span class="fa fa-download"></span> Export</a>
                         </span>
                         </div>
                     </form>

@@ -9,6 +9,7 @@ use App\Models\Users;
 use Framework\Input;
 use Framework\Response;
 use PHPExcel_IOFactory;
+use App\Libraries\Helper;
 
 class UsersController extends AdminController
 {
@@ -44,6 +45,84 @@ class UsersController extends AdminController
         return $this->render('admin.users.index')->with(['pager' => $pager, 'groupNames' => $groupNames, 'search' => $search]);
     }
 
+    public function export_index()
+    {
+        $page = intval(Input::get('page', 0));
+        $condition[] = '1=1';
+        $search = Input::get("search");
+        //$condition = "admin != " . Users::ROLE_ADMIN;
+        if (Users::ROLE_USER == $this->admin['permission']) {
+            $condition[] = "id = {$this->admin['id']}";
+        } else if (Users::ROLE_GROUP == $this->admin['permission']) {
+            $condition[] = "group_id = {$this->admin["group_id"]}";
+        }
+        if ($search != '') {
+            $condition[] = "( name LIKE '%{$search}%' or phone_number LIKE '%{$search}%' )";
+        }
+
+        $condition = implode(" AND ", $condition);
+        $items = Users::getInstance()->getAll($condition, $page, 10000, 'email DESC, phone_number ASC');
+
+        $objPHPExcel = new \PHPExcel();
+
+        // Add Data in your file
+        //header file
+        $objPHPExcel->setActiveSheetIndex(0)
+            ->setCellValue('A1', 'STT ')
+            ->setCellValue('B1', 'Name')
+            ->setCellValue('C1', 'Phone Number')
+            ->setCellValue('D1', 'Limited Cost (VND)')
+            ->setCellValue('E1', 'Current Cost (VND)')
+            ->setCellValue('F1', 'Email');
+        $objPHPExcel->getActiveSheet()->getStyle("D1")->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+        $objPHPExcel->getActiveSheet()->getStyle("E1")->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+        //fill data to file
+        $row_index = 1;
+        $i = 1;
+        foreach ($items["items"] as $item) {
+
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue("A" . ($row_index + $i), $i)
+                ->setCellValue("B" . ($row_index + $i), $item["name"] . ' - ' . $item['phone_number'])
+                ->setCellValue("C" . ($row_index + $i), $item["phone_number"])
+                ->setCellValue("D" . ($row_index + $i), Helper::formatCurrency($item["monthly_limited_cost"], 2, 0))
+                ->setCellValue("E" . ($row_index + $i), Helper::formatCurrency($item["monthly_used_cost"], 2, 0))
+                ->setCellValue("E" . ($row_index + $i), $item["email"]);
+
+            //format cell
+//            $objPHPExcel->getActiveSheet()->getStyle("F" . ($row_index + $i))->getNumberFormat()->setFormatCode('#,##0.00');
+//            $objPHPExcel->getActiveSheet()->getStyle("G" . ($row_index + $i))->getNumberFormat()->setFormatCode('#,##0.00');
+            $objPHPExcel->getActiveSheet()->getStyle("D" . ($row_index + $i))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+            $objPHPExcel->getActiveSheet()->getStyle("E" . ($row_index + $i))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+            $i += 1;
+        }
+        //set with size cell auto
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+
+        // Rename worksheet
+        $objPHPExcel->getActiveSheet()->setTitle("List Users");
+
+
+        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        $fileName = 'export_' . date('Y-m-d h:i');
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $fileName . '.xls"');
+        header('Cache-Control: max-age=0');
+
+        // Do your stuff here
+
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+
+        // This line will force the file to download
+        $objWriter->save('php://output');
+    }
+
     public function admin()
     {
         $page = intval(Input::get('page', 0));
@@ -65,7 +144,7 @@ class UsersController extends AdminController
             $conditions[] = "DATE(called_at) >= '{$conditionDate[0]}'";
             $conditions[] = "DATE(called_at) <= '{$conditionDate[1]}'";
         }
-		
+
         $condition = implode(' AND ', $conditions);
         $items = CallHistory::getInstance()->getAll($condition, $page, 20, 'called_at DESC');
         $currentUser = Users::getInstance()->getOneObjectByField(['id' => $id]);
@@ -76,7 +155,7 @@ class UsersController extends AdminController
             'historyTotal' => $items['total'],
             'search' => $search,
             'id' => $id,
-            "link_report"=>$reportUrl
+            "link_report" => $reportUrl
         ]);
     }
 
@@ -237,24 +316,23 @@ class UsersController extends AdminController
         $objPHPExcel->getActiveSheet()->getStyle("F5")->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
         $objPHPExcel->getActiveSheet()->getStyle("G5")->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
         //fill data to file
-        $row_index=5;
-        $i=1;
-        foreach($items["items"] as $item)
-        {
+        $row_index = 5;
+        $i = 1;
+        foreach ($items["items"] as $item) {
 
             $objPHPExcel->setActiveSheetIndex(0)
-                ->setCellValue("C".($row_index+$i), $i)
-                ->setCellValue("D".($row_index+$i), $item["called_at"])
-                ->setCellValue("E".($row_index+$i), $item["to_phone_number"])
-                ->setCellValue("F".($row_index+$i), $item["duration"])
-                ->setCellValue("G".($row_index+$i), $item["cost"]);
+                ->setCellValue("C" . ($row_index + $i), $i)
+                ->setCellValue("D" . ($row_index + $i), $item["called_at"])
+                ->setCellValue("E" . ($row_index + $i), $item["to_phone_number"])
+                ->setCellValue("F" . ($row_index + $i), $item["duration"])
+                ->setCellValue("G" . ($row_index + $i), $item["cost"]);
 
             //format cell
-            $objPHPExcel->getActiveSheet()->getStyle("F".($row_index+$i))->getNumberFormat()->setFormatCode('#,##0.00');
-            $objPHPExcel->getActiveSheet()->getStyle("G".($row_index+$i))->getNumberFormat()->setFormatCode('#,##0.00');
-            $objPHPExcel->getActiveSheet()->getStyle("C".($row_index+$i))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-            $objPHPExcel->getActiveSheet()->getStyle("E".($row_index+$i))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-            $i+=1;
+            $objPHPExcel->getActiveSheet()->getStyle("F" . ($row_index + $i))->getNumberFormat()->setFormatCode('#,##0.00');
+            $objPHPExcel->getActiveSheet()->getStyle("G" . ($row_index + $i))->getNumberFormat()->setFormatCode('#,##0.00');
+            $objPHPExcel->getActiveSheet()->getStyle("C" . ($row_index + $i))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+            $objPHPExcel->getActiveSheet()->getStyle("E" . ($row_index + $i))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+            $i += 1;
         }
         //set with size cell auto
         $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
@@ -270,9 +348,9 @@ class UsersController extends AdminController
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $objPHPExcel->setActiveSheetIndex(0);
 
-        $fileName = $currentUser->username.'_'.date('Y-m-d h:i');
+        $fileName = $currentUser->username . '_' . date('Y-m-d h:i');
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="'.$fileName.'.xls"');
+        header('Content-Disposition: attachment;filename="' . $fileName . '.xls"');
         header('Cache-Control: max-age=0');
 
         // Do your stuff here
