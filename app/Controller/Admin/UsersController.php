@@ -87,7 +87,7 @@ class UsersController extends AdminController
                 ->setCellValue("C" . ($row_index + $i), $item["phone_number"])
                 ->setCellValue("D" . ($row_index + $i), Helper::formatCurrency($item["monthly_limited_cost"], 2, 0))
                 ->setCellValue("E" . ($row_index + $i), Helper::formatCurrency($item["monthly_used_cost"], 2, 0))
-                ->setCellValue("E" . ($row_index + $i), $item["email"]);
+                ->setCellValue("F" . ($row_index + $i), $item["email"]);
 
             //format cell
 //            $objPHPExcel->getActiveSheet()->getStyle("F" . ($row_index + $i))->getNumberFormat()->setFormatCode('#,##0.00');
@@ -97,11 +97,11 @@ class UsersController extends AdminController
             $i += 1;
         }
         //set with size cell auto
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
 
         // Rename worksheet
         $objPHPExcel->getActiveSheet()->setTitle("List Users");
@@ -121,6 +121,7 @@ class UsersController extends AdminController
 
         // This line will force the file to download
         $objWriter->save('php://output');
+        exit();
     }
 
     public function admin()
@@ -359,5 +360,6 @@ class UsersController extends AdminController
 
         // This line will force the file to download
         $objWriter->save('php://output');
+        exit();
     }
 }
