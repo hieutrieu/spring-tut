@@ -13,27 +13,20 @@
     </div>
     <div class="box-body no-padding">
         <div class="mailbox-controls clearfix">
-            <div class="row">
-                <div class="col-md-8">
-                    <form role="form" class="form-inline" method="GET" action="{{url('admin/users/')}}">
-                        <div class="input-group col-xs-5 pull-left">
-                            <div class="input-group-addon bg-blue">Name | Phone:</div>
-                            <input type="text" value="{{$search}}" name="search" class="form-control" placeholder="Enter Name or Phone to Search">
-                        </div>
-                        <div class="input-group col-xs-7 pull-left">
-                            <div class="input-group-addon bg-blue">Date export:</div>
-                            <input type="text" name="search_date" class="form-control" placeholder="Enter Date time" value="{{$search_date!=''?$search_date:''}}">
-                            <div class="input-group-btn">
-                                <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"></span> Search</button>
-                                <a class="btn btn-warning" href="{{url('admin/users/export?search='.$search)}}"><span class="fa fa-download"></span> Export</a>
-                            </div>
-                        </div>
-                    </form>
+            <form role="form" class="form-inline" method="GET" action="{{url('admin/users/')}}">
+                <div class="input-group col-xs-5 pull-left">
+                    <div class="input-group-addon bg-blue">Name | Phone:</div>
+                    <input type="text" value="{{$search}}" name="search" class="form-control" placeholder="Enter Name or Phone to Search">
                 </div>
-                <div class="col-md-4">
-                    {{$pager->createLinks(6)}}
+                <div class="input-group col-xs-7 pull-left">
+                    <div class="input-group-addon bg-blue">Date export:</div>
+                    <input type="text" name="search_date" class="form-control" placeholder="Enter Date time" value="{{$search_date!=''?$search_date:''}}">
+                    <div class="input-group-btn">
+                        <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"></span> Search</button>
+                        <a class="btn btn-warning" href="{{url('admin/users/export?search='.$search)}}"><span class="fa fa-download"></span> Export</a>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
         <div class="table-responsive mailbox-messages">
             <table class="table table-striped table-bordered table-hover" align="center">
