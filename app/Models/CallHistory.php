@@ -97,7 +97,6 @@ class CallHistory extends ModelBase
                 {$where}
                 GROUP BY user_id
             ";
-
             $items = $this->db->select($sql);
             $items = array('items' => $items);
         } catch (DBException $e) {

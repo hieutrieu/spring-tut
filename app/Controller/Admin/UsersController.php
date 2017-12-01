@@ -24,6 +24,7 @@ class UsersController extends AdminController
         $page = intval(Input::get('page', 0));
         $condition[] = '1=1';
         $search = Input::get("search");
+        $search_date = Input::get("search_date");
         //$condition = "admin != " . Users::ROLE_ADMIN;
         if (Users::ROLE_USER == $this->admin['permission']) {
             $condition[] = "id = {$this->admin['id']}";
@@ -36,13 +37,42 @@ class UsersController extends AdminController
 
         $condition = implode(" AND ", $condition);
         $items = Users::getInstance()->getAll($condition, $page, 20, 'email DESC, phone_number ASC');
-        $groups = Groups::getInstance()->getObjectsByField([]);
-        $groupNames = [];
-        foreach ($groups as $group) {
-            $groupNames[$group['id']] = $group['name'];
+        $uids = [];
+        foreach ($items['items'] as &$item) {
+            $item['total_cost'] = 0;
+            $item['total_duration'] = 0;
+            $uids[$item['id']] = $item['id'];
         }
+        if (count($uids)) {
+            $uids = implode(',', $uids);
+            $conditionsDate[] = "1 = 1";
+            if ($search_date != '') {
+                $conditionDate = explode(' - ', $search_date);
+                $conditionsDate[] = "DATE(called_at) >= '{$conditionDate[0]}'";
+                $conditionsDate[] = "DATE(called_at) <= '{$conditionDate[1]}'";
+            }
+            $conditionsDate = implode(" AND ", $conditionsDate);
+            $callHistories = CallHistory::getInstance()->getAllHistoryByGroup("user_id IN({$uids}) and {$conditionsDate}");
+
+            foreach ($items['items'] as &$item) {
+                foreach ($callHistories['items'] as $ix => $citem) {
+                    if ($item['id'] == $citem['user_id']) {
+                        $item['total_cost'] = $citem['total_cost'];
+                        $item['total_duration'] = $citem['total_duration'];
+                        unset($callHistories['items'][$ix]);
+                        break;
+                    }
+                }
+            }
+        }
+//        $groups = Groups::getInstance()->getObjectsByField([]);
+        $groupNames = [];
+//        foreach ($groups as $group) {
+//            $groupNames[$group['id']] = $group['name'];
+//        }
+
         $pager = new Paginator($items['items'], $items['total'], 20, $page);
-        return $this->render('admin.users.index')->with(['pager' => $pager, 'groupNames' => $groupNames, 'search' => $search]);
+        return $this->render('admin.users.index')->with(['pager' => $pager, 'groupNames' => $groupNames, 'search' => $search, 'search_date' => $search_date]);
     }
 
     public function export_index()
