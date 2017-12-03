@@ -36,7 +36,7 @@ class UsersController extends AdminController
         }
 
         $condition = implode(" AND ", $condition);
-        $items = Users::getInstance()->getAll($condition, $page, 20, 'email DESC, phone_number ASC');
+        $items = Users::getInstance()->getAll($condition, $page, 100, 'name DESC, phone_number ASC');
         $uids = [];
         foreach ($items['items'] as &$item) {
             $item['total_cost'] = 0;
@@ -46,11 +46,12 @@ class UsersController extends AdminController
         if (count($uids)) {
             $uids = implode(',', $uids);
             $conditionsDate[] = "1 = 1";
-            if ($search_date != '') {
-                $conditionDate = explode(' - ', $search_date);
-                $conditionsDate[] = "DATE(called_at) >= '{$conditionDate[0]}'";
-                $conditionsDate[] = "DATE(called_at) <= '{$conditionDate[1]}'";
+            if ($search_date == '') {
+                $search_date = date("Y/m/d", strtotime("first day of this month")) . ' - ' . date("Y/m/d", strtotime("last day of this month"));
             }
+            $conditionDate = explode(' - ', $search_date);
+            $conditionsDate[] = "DATE(called_at) >= '{$conditionDate[0]}'";
+            $conditionsDate[] = "DATE(called_at) <= '{$conditionDate[1]}'";
             $conditionsDate = implode(" AND ", $conditionsDate);
             $callHistories = CallHistory::getInstance()->getAllHistoryByGroup("user_id IN({$uids}) and {$conditionsDate}");
 
@@ -71,7 +72,7 @@ class UsersController extends AdminController
 //            $groupNames[$group['id']] = $group['name'];
 //        }
 
-        $pager = new Paginator($items['items'], $items['total'], 20, $page);
+        $pager = new Paginator($items['items'], $items['total'], 100, $page);
         return $this->render('admin.users.index')->with(['pager' => $pager, 'groupNames' => $groupNames, 'search' => $search, 'search_date' => $search_date]);
     }
 
@@ -96,11 +97,12 @@ class UsersController extends AdminController
         if (count($uids)) {
             $uids = implode(',', $uids);
             $conditionsDate[] = "1 = 1";
-            if ($search_date != '') {
-                $conditionDate = explode(' - ', $search_date);
-                $conditionsDate[] = "DATE(called_at) >= '{$conditionDate[0]}'";
-                $conditionsDate[] = "DATE(called_at) <= '{$conditionDate[1]}'";
+            if ($search_date == '') {
+                $search_date = date("Y/m/d", strtotime("first day of this month")) . ' - ' . date("Y/m/d", strtotime("last day of this month"));
             }
+            $conditionDate = explode(' - ', $search_date);
+            $conditionsDate[] = "DATE(called_at) >= '{$conditionDate[0]}'";
+            $conditionsDate[] = "DATE(called_at) <= '{$conditionDate[1]}'";
             $conditionsDate = implode(" AND ", $conditionsDate);
             $callHistories = CallHistory::getInstance()->getAllHistoryByGroup("user_id IN({$uids}) and {$conditionsDate}");
 
@@ -183,7 +185,7 @@ class UsersController extends AdminController
         $page = intval(Input::get('page', 0));
         $condition = "admin = " . Users::ROLE_ADMIN;
         $items = Users::getInstance()->getAll($condition, $page);
-        $pager = new Paginator($items['items'], $items['total'], 20, $page);
+        $pager = new Paginator($items['items'], $items['total'], 100, $page);
         return $this->render('admin.users.index')->with(array('pager' => $pager));
     }
 
@@ -194,23 +196,25 @@ class UsersController extends AdminController
         $page = intval(Input::get('page', 0));
         $search = Input::get('search');
         $conditions[] = "user_id = {$id}";
-        if ($search != '') {
-            $conditionDate = explode(' - ', $search);
-            $conditions[] = "DATE(called_at) >= '{$conditionDate[0]}'";
-            $conditions[] = "DATE(called_at) <= '{$conditionDate[1]}'";
+        if ($search == '') {
+            $search = date("Y/m/d", strtotime("first day of this month")) . ' - ' . date("Y/m/d", strtotime("last day of this month"));
         }
-
+        $conditionDate = explode(' - ', $search);
+        $conditions[] = "DATE(called_at) >= '{$conditionDate[0]}'";
+        $conditions[] = "DATE(called_at) <= '{$conditionDate[1]}'";
         $condition = implode(' AND ', $conditions);
-        $items = CallHistory::getInstance()->getAll($condition, $page, 20, 'called_at DESC');
+        $items = CallHistory::getInstance()->getAll($condition, $page, 100, 'called_at DESC');
         $currentUser = Users::getInstance()->getOneObjectByField(['id' => $id]);
-        $pager = new Paginator($items['items'], $items['total'], 20, $page);
+        $pager = new Paginator($items['items'], $items['total'], 100, $page);
+        $total = CallHistory::getInstance()->getTotalByUser($condition);
         return $this->render('admin.users.info')->with([
             'pager' => $pager,
             'user' => $currentUser,
             'historyTotal' => $items['total'],
             'search' => $search,
             'id' => $id,
-            "link_report" => $reportUrl
+            "link_report" => $reportUrl,
+            'total' => $total,
         ]);
     }
 
@@ -349,11 +353,12 @@ class UsersController extends AdminController
     {
         $search = Input::get('search');
         $conditions[] = "user_id = {$id}";
-        if ($search != '') {
-            $conditionDate = explode(' - ', $search);
-            $conditions[] = "DATE(called_at) >= '{$conditionDate[0]}'";
-            $conditions[] = "DATE(called_at) <= '{$conditionDate[1]}'";
+        if ($search == '') {
+            $search = date("Y/m/d", strtotime("first day of this month")) . ' - ' . date("Y/m/d", strtotime("last day of this month"));
         }
+        $conditionDate = explode(' - ', $search);
+        $conditions[] = "DATE(called_at) >= '{$conditionDate[0]}'";
+        $conditions[] = "DATE(called_at) <= '{$conditionDate[1]}'";
         $condition = implode(' AND ', $conditions);
         $currentUser = Users::getInstance()->getOneObjectByField(['id' => $id]);
         $items = CallHistory::getInstance()->getAllHistoryByUser($condition);

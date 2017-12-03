@@ -106,4 +106,29 @@ class CallHistory extends ModelBase
         return $items;
     }
 
+    public function getTotalByUser($condition = '') {
+        $item = array(
+            'total_cost'=> 0,
+            'total_duration'=> 0,
+        );
+        try {
+            if ($condition != '') {
+                $where = " WHERE {$condition}";
+            } else {
+                $where = '';
+            }
+            $sql = " SELECT user_id, SUM(cost) total_cost, SUM(duration) total_duration
+                FROM `{$this->tableName}`
+                {$where}
+                GROUP BY user_id
+            ";
+            $items = $this->db->select($sql);
+            if (count($items) > 0) {
+                $item = $items[0];
+            }
+        } catch (DBException $e) {}
+
+        return $item;
+    }
+
 }

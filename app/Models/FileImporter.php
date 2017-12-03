@@ -114,7 +114,8 @@ class FileImporter
                 );
 				if(is_object($currentUser)) {
 					$userBefore = array(
-						'monthly_used_cost' => $currentUser->monthly_used_cost - $actualPrice,
+						'monthly_used_cost' => $actualPrice,
+//						'monthly_used_cost' => $currentUser->monthly_used_cost - $actualPrice,
 					);
 					Users::getInstance()->update($userBefore, array('id' => $currentUser->id));
 				}

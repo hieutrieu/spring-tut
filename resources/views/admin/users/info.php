@@ -21,9 +21,6 @@
                     </div>
                     <div class="col-xs-6" style="margin-top: 10px">
                         <div class="col-xs-12">
-                            <label>Limited Cost: </label> {{App\Libraries\Helper::formatCurrency($user->monthly_limited_cost)}}
-                        </div>
-                        <div class="col-xs-12">
                             <label>Current Cost: </label> {{App\Libraries\Helper::formatCurrency($user->monthly_used_cost)}}
                         </div>
                     </div>
@@ -64,11 +61,18 @@
                     <td class="text-center">{{++$index}}</td>
                     <td class="text-left">{{$value['called_at']}}</td>
                     <td class="text-left">{{$value['to_phone_number']}}</td>
-                    <td class="text-right">{{App\Libraries\Helper::formatCurrency($value['duration'],0,0)}}</td>
+                    <td class="text-right">{{$value['duration']}}</td>
                     <td class="text-right">{{App\Libraries\Helper::formatCurrency($value['cost'],2,0)}}</td>
                 </tr>
                 @endforeach
                 </tbody>
+                <tfoot>
+                <tr>
+                    <th class="text-right" colspan="3">Total</th>
+                    <th class="text-right">{{$total['total_duration']}}</th>
+                    <th class="text-right">{{App\Libraries\Helper::formatCurrency($total['total_cost'],2,0)}}</th>
+                </tr>
+                </tfoot>
             </table>
         </div>
         <div class="box-footer">
@@ -86,10 +90,22 @@
 @endsection
 @section('addJsInline')
 <script>
-    $('input[name="search"]').daterangepicker({
-        locale: {
-            format: 'YYYY/MM/DD'
-        }
-    });
+    search_date = '{{$search}}';
+    if (search_date == '') {
+        $('input[name="search"]').daterangepicker({
+            locale: {
+                format: 'YYYY/MM/DD'
+            },
+            startDate: moment().subtract(1, 'month'),
+            maxDate: new Date()
+        });
+    } else {
+        $('input[name="search"]').daterangepicker({
+            locale: {
+                format: 'YYYY/MM/DD'
+            },
+            maxDate: new Date()
+        });
+    }
 </script>
 @endsection
