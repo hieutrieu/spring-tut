@@ -77,32 +77,56 @@ class UsersController extends AdminController
 
     public function export_index()
     {
-        $page = intval(Input::get('page', 0));
         $condition[] = '1=1';
         $search = Input::get("search");
-        //$condition = "admin != " . Users::ROLE_ADMIN;
-        if (Users::ROLE_USER == $this->admin['permission']) {
-            $condition[] = "id = {$this->admin['id']}";
-        } else if (Users::ROLE_GROUP == $this->admin['permission']) {
-            $condition[] = "group_id = {$this->admin["group_id"]}";
-        }
+        $search_date = Input::get("search_date");
+
         if ($search != '') {
             $condition[] = "( name LIKE '%{$search}%' or phone_number LIKE '%{$search}%' )";
         }
 
         $condition = implode(" AND ", $condition);
-        $items = Users::getInstance()->getAll($condition, $page, 10000, 'email DESC, phone_number ASC');
+        $items = Users::getInstance()->getAll($condition, 0, 9999999999, 'name ASC, phone_number ASC');
+        $uids = [];
+        foreach ($items['items'] as &$item) {
+            $item['total_cost'] = 0;
+            $item['total_duration'] = 0;
+            $uids[$item['id']] = $item['id'];
+        }
+        if (count($uids)) {
+            $uids = implode(',', $uids);
+            $conditionsDate[] = "1 = 1";
+            if ($search_date != '') {
+                $conditionDate = explode(' - ', $search_date);
+                $conditionsDate[] = "DATE(called_at) >= '{$conditionDate[0]}'";
+                $conditionsDate[] = "DATE(called_at) <= '{$conditionDate[1]}'";
+            }
+            $conditionsDate = implode(" AND ", $conditionsDate);
+            $callHistories = CallHistory::getInstance()->getAllHistoryByGroup("user_id IN({$uids}) and {$conditionsDate}");
+
+            foreach ($items['items'] as &$item) {
+                foreach ($callHistories['items'] as $ix => $citem) {
+                    if ($item['id'] == $citem['user_id']) {
+                        $item['total_cost'] = $citem['total_cost'];
+                        $item['total_duration'] = $citem['total_duration'];
+                        unset($callHistories['items'][$ix]);
+                        break;
+                    }
+                }
+            }
+        }
 
         $objPHPExcel = new \PHPExcel();
 
         // Add Data in your file
         //header file
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', 'Date: ' . $search_date);
         $objPHPExcel->setActiveSheetIndex(0)
             ->setCellValue('A1', 'STT ')
             ->setCellValue('B1', 'Name')
             ->setCellValue('C1', 'Phone Number')
-            ->setCellValue('D1', 'Limited Cost (VND)')
-            ->setCellValue('E1', 'Current Cost (VND)')
+            ->setCellValue('D1', 'Total Duration (s)')
+            ->setCellValue('E1', 'Total Cost (VND)')
             ->setCellValue('F1', 'Email');
         $objPHPExcel->getActiveSheet()->getStyle("D1")->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
         $objPHPExcel->getActiveSheet()->getStyle("E1")->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
@@ -115,8 +139,8 @@ class UsersController extends AdminController
                 ->setCellValue("A" . ($row_index + $i), $i)
                 ->setCellValue("B" . ($row_index + $i), $item["name"] . ' - ' . $item['phone_number'])
                 ->setCellValue("C" . ($row_index + $i), $item["phone_number"])
-                ->setCellValue("D" . ($row_index + $i), Helper::formatCurrency($item["monthly_limited_cost"], 2, 0))
-                ->setCellValue("E" . ($row_index + $i), Helper::formatCurrency($item["monthly_used_cost"], 2, 0))
+                ->setCellValue("D" . ($row_index + $i), $item["total_duration"])
+                ->setCellValue("E" . ($row_index + $i), Helper::formatCurrency($item["total_cost"], 2, 0))
                 ->setCellValue("F" . ($row_index + $i), $item["email"]);
 
             //format cell

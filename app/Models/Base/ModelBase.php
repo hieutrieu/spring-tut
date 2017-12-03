@@ -318,7 +318,6 @@ class ModelBase
                 ORDER BY {$orderBy}
                 LIMIT {$limit} OFFSET {$offset}
             ";
-
             $items = $this->db->select($sql);
             $items = array('total' => intval($totalArr['0']['total']), 'items' => $items);
         } catch (DBException $e) {

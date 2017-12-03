@@ -23,7 +23,7 @@
                     <input type="text" name="search_date" class="form-control" placeholder="Enter Date time" value="{{$search_date!=''?$search_date:''}}">
                     <div class="input-group-btn">
                         <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"></span> Search</button>
-                        <a class="btn btn-warning" href="{{url('admin/users/export?search='.$search)}}"><span class="fa fa-download"></span> Export</a>
+                        <a class="btn btn-warning" href="{{url('admin/users/export?search='.$search.'&search_date='.$search_date)}}"><span class="fa fa-download"></span> Export</a>
                     </div>
                 </div>
             </form>
@@ -84,10 +84,22 @@
 @endsection
 @section('addJsInline')
 <script>
-    $('input[name="search_date"]').daterangepicker({
-        locale: {
-            format: 'YYYY/MM/DD'
-        }
-    });
+    search_date = '{{$search_date}}';
+    if (search_date == '') {
+        $('input[name="search_date"]').daterangepicker({
+            locale: {
+                format: 'YYYY/MM/DD'
+            },
+            startDate: moment().subtract(1, 'month'),
+            maxDate: new Date()
+        });
+    } else {
+        $('input[name="search_date"]').daterangepicker({
+            locale: {
+                format: 'YYYY/MM/DD'
+            },
+            maxDate: new Date()
+        });
+    }
 </script>
 @endsection
