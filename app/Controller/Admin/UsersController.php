@@ -182,11 +182,95 @@ class UsersController extends AdminController
 
     public function admin()
     {
+        $this->setTitle('Admin Manager');
         $page = intval(Input::get('page', 0));
-        $condition = "admin = " . Users::ROLE_ADMIN;
+        $condition[] = "permission = '" . Users::ROLE_ADMIN . "'";
+        $search = Input::get("search");
+        if ($search != '') {
+            $condition[] = "( name LIKE '%{$search}%' or phone_number LIKE '%{$search}%' )";
+        }
+        $condition = implode(" AND ", $condition);
         $items = Users::getInstance()->getAll($condition, $page);
         $pager = new Paginator($items['items'], $items['total'], 100, $page);
-        return $this->render('admin.users.index')->with(array('pager' => $pager));
+        return $this->render('admin.users.admin')->with(array('pager' => $pager, 'search' => $search));
+    }
+
+    public function admin_edit($id)
+    {
+        $this->setTitle('Admin Manager');
+        if (Users::ROLE_GROUP == $this->admin['permission']) {
+            $condition = "group_id = {$this->admin["group_id"]} and id =$id";
+            $listUserByGroup = Users::getInstance()->getAll($condition);
+            if (!$listUserByGroup["total"]) {
+                return $this->redirect(url('admin/errors/access'));
+            }
+        } else if (Users::ROLE_USER == $this->admin['permission']) {
+            if ($id != $this->admin['id']) {
+                return $this->redirect(url('admin/errors/access'));
+            }
+        }
+        $this->bc->add('Edit', 'admin/users/admin/edit/' . $id);
+
+        if (!$id) {
+            $member = null;
+        } else {
+            $member = Users::getInstance()->getOneObjectByField(array('id' => $id));
+        }
+        return $this->render('admin.users.admin_edit')->with(array('member' => $member));
+    }
+
+    public function admin_save()
+    {
+        $this->setTitle('Admin Manager');
+        try {
+            $id = intval(Input::get('id', 0));
+            //get previous monthlycost of user
+            $currentUser = Users::getInstance()->getOneObjectByField(array("id" => $id));
+            $data = array(
+                'name' => Input::get('name'),
+                'phone_number' => Input::get('phone_number'),
+                'email' => Input::get('email'),
+                'address' => Input::get('address'),
+                'monthly_limited_cost' => '',
+                'username' => Input::get('user_name'),
+                'password' => md5(Input::get('password')),
+                'group_id' => Input::get('group_id'),
+                'permission' => Input::get('permission'),
+                'monthly_used_cost' => 0
+            );
+            if ($id) {
+                $data = Users::getInstance()->update($data, array('id' => $id));
+            } else {
+                $data = Users::getInstance()->insert($data);
+            }
+            return Response::redirect(url('admin/users/admin'));
+        } catch (\Exception $e) {
+            return $this->redirect(url('admin/errors/exception'));
+        }
+    }
+
+    public function admin_delete()
+    {
+        try {
+            $id = intval(Input::get('id', 0));
+            if (Users::ROLE_GROUP == $this->admin['permission']) {
+                $condition = "group_id = {$this->admin["group_id"]} and id =$id";
+                $listUserByGroup = Users::getInstance()->getAll($condition);
+                if (!$listUserByGroup["total"]) {
+                    return $this->redirect(url('admin/errors/access'));
+                }
+            } else if (Users::ROLE_USER == $this->admin['permission']) {
+                if ($id != $this->admin['id']) {
+                    return $this->redirect(url('admin/errors/access'));
+                }
+            }
+            if ($id) {
+                $data = Users::getInstance()->delete(array('id' => $id));
+            }
+            return Response::redirect(url('admin/users/admin'));
+        } catch (\Exception $e) {
+            return $this->redirect(url('admin/errors/exception'));
+        }
     }
 
     public function info($id)

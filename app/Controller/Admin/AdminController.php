@@ -62,6 +62,11 @@ class AdminController {
     {
         $this->menu = new Menu(array(
             array(
+                'path' => 'admin/users/admin',
+                'label' => 'Admin Manager',
+                'icon' => 'user'
+            ),
+            array(
                 'path' => 'admin/users',
                 'label' => 'Users Manager',
                 'icon' => 'user'

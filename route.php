@@ -25,7 +25,6 @@ Route::action('GET', '/admin/groups/delete/{id}', 'Admin\GroupsController@delete
 Route::action('GET', '/admin/groups/info/{id}', 'Admin\GroupsController@info');
 Route::action('GET', '/admin/groups/report/{id}', 'Admin\GroupsController@report');
 
-Route::action('GET', '/admin/users/admin', 'Admin\UsersController@admin');
 Route::action('GET', '/admin/users', 'Admin\UsersController@index');
 Route::action('GET', '/admin/users/export', 'Admin\UsersController@export_index');
 Route::action('GET', '/admin/users/edit/{id}', 'Admin\UsersController@edit');
@@ -33,6 +32,10 @@ Route::action('POST', '/admin/users/save', 'Admin\UsersController@save');
 Route::action('GET', '/admin/users/delete/{id}', 'Admin\UsersController@delete');
 Route::action('GET', '/admin/users/info/{id}', 'Admin\UsersController@info');
 Route::action('GET', '/admin/users/report/{id}', 'Admin\UsersController@report');
+Route::action('GET', '/admin/users/admin', 'Admin\UsersController@admin');
+Route::action('GET', '/admin/users/admin/edit/{id}', 'Admin\UsersController@admin_edit');
+Route::action('POST', '/admin/users/admin/save', 'Admin\UsersController@admin_save');
+Route::action('GET', '/admin/users/admin/delete/{id}', 'Admin\UsersController@admin_delete');
 
 Route::action('GET', '/admin/config', 'Admin\ConfigController@edit');
 Route::action('POST', '/admin/config/save', 'Admin\ConfigController@save');

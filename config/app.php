@@ -1,8 +1,8 @@
 <?php
 return array(
     'debug' => true,
-    'site_name' => 'Telephone Cost',
-    'site_name_short' => 'Telephone',
+    'site_name' => 'InnoBilling',
+    'site_name_short' => 'InnoBilling',
     'scanDir' => 'D:\projects\newteam\spring-tut\test',
 	'limit_scan_file' => 1,
 	'blockPrices' => array(

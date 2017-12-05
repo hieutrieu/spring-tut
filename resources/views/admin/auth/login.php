@@ -2,7 +2,7 @@
 @section('content')
 <div class="login-box">
 	<div class="login-logo">
-		<a href="../../index2.html"><b>Admin</b></a>
+		<a href="../../index2.html"><b>InnoBilling</b></a>
 	</div><!-- /.login-logo -->
 	<div class="login-box-body" id="login-box">
 		<p class="login-box-msg">Sign in to start your session</p>
