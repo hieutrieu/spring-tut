@@ -36,7 +36,9 @@ class BackupFile
         try {
             $sourceFile = $this->source_dir . '/' . $backup_file;
             $targetFile = $this->backup_dir . '/' . $backup_file;
-            copy($sourceFile, $targetFile);
+            if (file_exists($sourceFile)) {
+                copy($sourceFile, $targetFile);
+            }
         } catch (\Exception $ex) {}
     }
 
