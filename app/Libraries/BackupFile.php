@@ -33,9 +33,11 @@ class BackupFile
 
     public function backup_file($backup_file)
     {
-        $sourceFile = $this->source_dir . '/' . $backup_file;
-        $targetFile = $this->backup_dir . '/' . $backup_file;
-        copy($sourceFile, $targetFile);
+        try {
+            $sourceFile = $this->source_dir . '/' . $backup_file;
+            $targetFile = $this->backup_dir . '/' . $backup_file;
+            copy($sourceFile, $targetFile);
+        } catch (\Exception $ex) {}
     }
 
     public function create_dir_if_exist()

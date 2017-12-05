@@ -22,7 +22,7 @@ class UsersController extends AdminController
     public function index()
     {
         $page = intval(Input::get('page', 0));
-        $condition[] = '1=1';
+        $condition[] = "permission != '" . Users::ROLE_ADMIN . "'";
         $search = Input::get("search");
         $search_date = Input::get("search_date");
         //$condition = "admin != " . Users::ROLE_ADMIN;
@@ -78,7 +78,7 @@ class UsersController extends AdminController
 
     public function export_index()
     {
-        $condition[] = '1=1';
+        $condition[] = "permission != '" . Users::ROLE_ADMIN . "'";
         $search = Input::get("search");
         $search_date = Input::get("search_date");
 
