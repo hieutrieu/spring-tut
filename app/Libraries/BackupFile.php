@@ -47,7 +47,7 @@ class BackupFile
     public function create_dir_if_exist()
     {
         $backup_dir = $this->source_dir . '/' . $this->target_dir;
-        if (!file_exists($backup_dir)) {
+        if (!is_dir($backup_dir)) {
             mkdir($backup_dir, 0777, true);
         }
         return $backup_dir;
