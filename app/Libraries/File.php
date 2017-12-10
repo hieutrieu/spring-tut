@@ -14,7 +14,7 @@ class File
         $options += array(
             'nomask' => '/(\.\.?|CVS)$/',
             'callback' => 0,
-            'recurse' => TRUE,
+            'recurse' => false,
             'key' => 'uri',
             'min_depth' => 0,
         );
