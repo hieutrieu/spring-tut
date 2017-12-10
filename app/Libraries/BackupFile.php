@@ -39,7 +39,9 @@ class BackupFile
             if (file_exists($sourceFile)) {
                 copy($sourceFile, $targetFile);
             }
+            return true;
         } catch (\Exception $ex) {}
+        return false;
     }
 
     public function create_dir_if_exist()

@@ -82,9 +82,11 @@ class ScanController
 				FileScan::getInstance()->update(array('status' => FileScan::STATUS_PROCESSING),array("id" => $file["id"]));
 				$result = FileImporter::getInstance()->process($file);
 				if ($result == true) {
-					FileScan::getInstance()->delete(array("id" => $file["id"]));
-					BackupFile::getInstance(config('app.scanDir'))->backup_file($file['filename']);
-					unlink($file['path_file']);
+					$check_delete = FileScan::getInstance()->delete(array("id" => $file["id"]));
+					if ($check_delete) {
+						BackupFile::getInstance(config('app.scanDir'))->backup_file($file['filename']);
+						unlink($file['path_file']);
+					}
 				} else {
 					FileScan::getInstance()->update(array('status' => FileScan::STATUS_FAILED),array("id" => $file["id"]));
 				}
