@@ -8,6 +8,7 @@ use App\Models\FileScan;
 use App\Libraries\BackupFile;
 use App\Models\Logs;
 use Exception;
+use App\Libraries\PhoneCharge;
 
 class ScanController
 {
@@ -75,6 +76,7 @@ class ScanController
 	 */
 	public function importFile()
 	{
+//		$phone_charge = PhoneCharge::getInstance()->phone_charged('02873081616', 61);
 		try {
 			$limit = config('app.limit_scan_file');
 			$files = FileScan::getInstance()->getFileScaned($limit);

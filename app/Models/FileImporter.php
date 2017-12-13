@@ -11,6 +11,7 @@ use Framework\Config;
 use Framework\DB\Exception\DBException;
 use Framework\Exception\FrameworkException;
 use League\Csv\Reader;
+use App\Libraries\Phone;
 
 class FileImporter
 {
@@ -41,6 +42,7 @@ class FileImporter
 	public function __construct()
 	{
 		$this->prices = config('prices');
+        debug(Phone::getInstance('0837700968')->parser_phone_number(),1);
 	}
 
 	public static function getInstance()

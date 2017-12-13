@@ -39,3 +39,5 @@ Route::action('GET', '/admin/users/admin/delete/{id}', 'Admin\UsersController@ad
 
 Route::action('GET', '/admin/config', 'Admin\ConfigController@edit');
 Route::action('POST', '/admin/config/save', 'Admin\ConfigController@save');
+
+Route::action('GET', '/admin/test', 'Admin\TestController@index');

@@ -1,130 +1,260 @@
 @layout('admin.layouts.layout')
 @section('content')
 <form action="{{url('admin/config/save')}}" id="adminForm" method="post" xmlns="http://www.w3.org/1999/html">
-    <div class="col-xs-12 no-padding">
-        <div class="box box-primary">
-            <div class="box-body">
-                <fieldset>
-                    <legend>MOBILE PHONE</legend>
+    <div class="box box-primary">
+        <div class="box-body">
+            <fieldset>
+                <div class="col-lg-6">
+                    <legend class="">DI ĐỘNG - Nội mạng</legend>
                     <div class="form-group clearfix">
-                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
                             <label>Block 6s</label>
                         </div>
-                        <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
-                            <div class="input-group input-group-sm">
-                                <input name="data[mobilephone][6s]" class="form-control required" placeholder="" value="{{isset($data['mobilephone'])?$data['mobilephone']['6s']:''}}">
-                            </div>
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
+                            <input name="data[mobilephone][nm][6s]" class="form-control required" placeholder="" value="{{isset($data['mobilephone'])?$data['mobilephone']['nm']['6s']:0}}">
                         </div>
                     </div>
                     <div class="form-group clearfix">
-                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
                             <label>Block 1s</label>
                         </div>
-                        <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
-                            <div class="input-group input-group-sm">
-                                <input name="data[mobilephone][1s]" class="form-control required" placeholder="" value="{{isset($data['mobilephone'])?$data['mobilephone']['1s']:''}}">
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <legend>TELEPHONE</legend>
-                    <div class="form-group clearfix">
-                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-                            <label>Block 6s</label>
-                        </div>
-                        <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
-                            <div class="input-group input-group-sm">
-                                <input name="data[telephone][6s]" class="form-control required" placeholder="" value="{{isset($data['telephone'])?$data['telephone']['6s']:''}}">
-                            </div>
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
+                            <input name="data[mobilephone][nm][1s]" class="form-control required" placeholder="" value="{{isset($data['mobilephone'])?$data['mobilephone']['nm']['1s']:0}}">
                         </div>
                     </div>
                     <div class="form-group clearfix">
-                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-                            <label>Block 1s</label>
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                            <label>Block 1 phut</label>
                         </div>
-                        <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
-                            <div class="input-group input-group-sm">
-                                <input name="data[telephone][1s]" class="form-control required" placeholder="" value="{{isset($data['telephone'])?$data['telephone']['1s']:''}}">
-                            </div>
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
+                            <input name="data[mobilephone][nm][1p]" class="form-control required" placeholder="" value="{{isset($data['mobilephone'])?$data['mobilephone']['nm']['1p']:0}}">
                         </div>
                     </div>
-                </fieldset>
-            </div>
-            <div class="box-footer text-right">
-                <div class="btn-group-xs">
-                    <button type="submit" class="btn btn-small btn-flat btn-primary"><i class="fa fa-save"></i> | Save</button>
                 </div>
+                <div class="col-lg-6">
+                    <legend class="">Khác mạng</legend>
+                    <div class="form-group clearfix">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                            <label>Block 6s</label>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
+                            <input name="data[mobilephone][km][6s]" class="form-control required" placeholder="" value="{{isset($data['mobilephone'])?$data['mobilephone']['km']['6s']:0}}">
+                        </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                            <label>Block 1s</label>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
+                            <input name="data[mobilephone][km][1s]" class="form-control required" placeholder="" value="{{isset($data['mobilephone'])?$data['mobilephone']['km']['1s']:0}}">
+                        </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                            <label>Block 1 phut</label>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
+                            <input name="data[mobilephone][km][1p]" class="form-control required" placeholder="" value="{{isset($data['mobilephone'])?$data['mobilephone']['km']['1p']:0}}">
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="box box-primary">
+        <div class="box-body">
+            <fieldset>
+                <div class="col-lg-6">
+                    <legend class="">CỐ ĐỊNH - Nội mạng</legend>
+                    <div class="form-group clearfix">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                            <label>Block 6s</label>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
+                            <input name="data[telephone][nm][6s]" class="form-control required" placeholder="" value="{{isset($data['telephone'])?$data['telephone']['nm']['6s']:0}}">
+                        </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                            <label>Block 1s</label>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
+                            <input name="data[telephone][nm][1s]" class="form-control required" placeholder="" value="{{isset($data['telephone'])?$data['telephone']['nm']['1s']:0}}">
+                        </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                            <label>Block 1 phut</label>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
+                            <input name="data[telephone][nm][1p]" class="form-control required" placeholder="" value="{{isset($data['telephone'])?$data['telephone']['nm']['1p']:0}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <legend class="">Khác mạng</legend>
+                    <div class="form-group clearfix">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                            <label>Block 6s</label>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
+                            <input name="data[telephone][km][6s]" class="form-control required" placeholder="" value="{{isset($data['telephone'])?$data['telephone']['km']['6s']:0}}">
+                        </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                            <label>Block 1s</label>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
+                            <input name="data[telephone][km][1s]" class="form-control required" placeholder="" value="{{isset($data['telephone'])?$data['telephone']['km']['1s']:0}}">
+                        </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                            <label>Block 1 phut</label>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
+                            <input name="data[telephone][km][1p]" class="form-control required" placeholder="" value="{{isset($data['telephone'])?$data['telephone']['km']['1p']:0}}">
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="box box-primary">
+        <div class="box-body">
+            <fieldset>
+                <legend>DI ĐỘNG - Sử dụng đầu số nội mạng (Sử dụng dấu ',' để phân biệt đầu số)</legend>
+                <div class="form-group clearfix">
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                        <label>Đầu số nội mạng</label>
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                        <input name="data[first_mobiphone][nm]" class="form-control" placeholder="" value="{{isset($data['first_mobiphone'])?$data['first_mobiphone']['nm']:''}}">
+                    </div>
+                </div>
+                <div class="form-group clearfix">
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                        <label>Đầu số khác mạng</label>
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                        <input name="data[first_mobiphone][km]" class="form-control" placeholder="" value="{{isset($data['first_mobiphone'])?$data['first_mobiphone']['km']:''}}">
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="box box-primary">
+        <div class="box-body">
+            <fieldset>
+                <legend>CỐ ĐỊNH - Sử dụng đầu số nội mạng (Sử dụng dấu ',' để phân biệt đầu số)</legend>
+                <div class="form-group clearfix">
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                        <label>Đầu số nội mạng</label>
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                        <input name="data[first_telephone][nm]" class="form-control" placeholder="" value="{{isset($data['first_telephone'])?$data['first_telephone']['nm']:''}}">
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="box box-primary">
+        <div class="box-body">
+            <fieldset>
+                <legend>CỐ ĐỊNH NỘI HẠT</legend>
+                <div class="form-group clearfix">
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                        <label>Chọn tỉnh (thành phố)</label>
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                        <select name="data[area_code]" class="form-control">
+                            @foreach($provinces as $area_code => $province)
+                            <option value="{{$area_code}}" {{isset($data['area_code']) && $data['area_code'] == $area_code?'selected':''}}>{{$province}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="box box-primary">
+        <div class="box-body">
+            <fieldset>
+                <legend>QUỐC TẾ (Đơn giá 1 phút) -  (Sử dụng dấu ',' để phân biệt đầu số)</legend>
+                <div class="clearfix">
+                    <legend>Trong nước, không tính là quốc tế </legend>
+                    <div class="col-sm-10 col-xs-10">
+                        <label>Country Codes</label>
+                        <input name="data[international][0][codes]" class="form-control" placeholder="" value="{{isset($data['international'])?$data['international'][0]['codes']:0}}">
+                    </div>
+                    <div class="col-sm-2 col-xs-2">
+                        <label>Đơn giá</label>
+                        <input name="data[international][0][price]" class="form-control" placeholder="" value="{{isset($data['international'])?$data['international'][0]['price']:0}}">
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <legend>Khu vực 1</legend>
+                    <div class="col-sm-10 col-xs-10">
+                        <label>Country Codes</label>
+                        <input name="data[international][1][codes]" class="form-control" placeholder="" value="{{isset($data['international'])?$data['international'][1]['codes']:''}}">
+                    </div>
+                    <div class="col-sm-2 col-xs-2">
+                        <label>Đơn giá</label>
+                        <input name="data[international][1][price]" class="form-control" placeholder="" value="{{isset($data['international'])?$data['international'][1]['price']:''}}">
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <legend>Khu vực 2</legend>
+                    <div class="col-sm-10 col-xs-10">
+                        <label>Country Codes</label>
+                        <input name="data[international][2][codes]" class="form-control" placeholder="" value="{{isset($data['international'])?$data['international'][2]['codes']:''}}">
+                    </div>
+                    <div class="col-sm-2 col-xs-2">
+                        <label>Đơn giá</label>
+                        <input name="data[international][2][price]" class="form-control" placeholder="" value="{{isset($data['international'])?$data['international'][2]['price']:''}}">
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <legend>Khu vực 3</legend>
+                    <div class="col-sm-10 col-xs-10">
+                        <label>Country Codes</label>
+                        <input name="data[international][3][codes]" class="form-control" placeholder="" value="{{isset($data['international'])?$data['international'][3]['codes']:''}}">
+                    </div>
+                    <div class="col-sm-2 col-xs-2">
+                        <label>Đơn giá</label>
+                        <input name="data[international][3][price]" class="form-control" placeholder="" value="{{isset($data['international'])?$data['international'][3]['price']:''}}">
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <legend>Khu vực 4</legend>
+                    <div class="col-sm-10 col-xs-10">
+                        <label>Country Codes</label>
+                        <input name="data[international][4][codes]" class="form-control" placeholder="" value="{{isset($data['international'])?$data['international'][4]['codes']:''}}">
+                    </div>
+                    <div class="col-sm-2 col-xs-2">
+                        <label>Đơn giá</label>
+                        <input name="data[international][4][price]" class="form-control" placeholder="" value="{{isset($data['international'])?$data['international'][4]['price']:''}}">
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <legend>Khu vực 5</legend>
+                    <div class="col-sm-10 col-xs-10">
+                        <label>Country Codes</label>
+                        <input name="data[international][5][codes]" class="form-control" placeholder="" value="{{isset($data['international'])?$data['international'][5]['codes']:''}}">
+                    </div>
+                    <div class="col-sm-2 col-xs-2">
+                        <label>Đơn giá</label>
+                        <input name="data[international][5][price]" class="form-control" placeholder="" value="{{isset($data['international'])?$data['international'][5]['price']:''}}">
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="box-footer text-right">
+            <div class="btn-group-xs">
+                <button type="submit" class="btn btn-small btn-flat btn-primary"><i class="fa fa-save"></i> | Save</button>
             </div>
         </div>
     </div>
 </form>
-@endsection
-@section('addJsInline')
-<script type="text/javascript">
-    $('#adminForm')
-        .bootstrapValidator({
-            message: 'This value is not valid',
-            group: '.form-group',
-            feedbackIcons: {
-                valid: '',
-                invalid: '',
-                validating: ''
-            },
-            fields: {
-                'data[mobilephone][6s]': {
-                    validators: {
-                        notEmpty: {
-                            message: 'The block is required'
-                        },
-                        numeric: {
-                            message: 'The value is not a number',
-                            // The default separators
-                            thousandsSeparator: '',
-                            decimalSeparator: '.'
-                        }
-                    }
-                },
-                'data[mobilephone][1s]': {
-                    validators: {
-                        notEmpty: {
-                            message: 'The block is required'
-                        },
-                        numeric: {
-                            message: 'The value is not a number',
-                            // The default separators
-                            thousandsSeparator: '',
-                            decimalSeparator: '.'
-                        }
-                    }
-                },
-                'data[telephone][6s]': {
-                    validators: {
-                        notEmpty: {
-                            message: 'The block is required'
-                        },
-                        numeric: {
-                            message: 'The value is not a number',
-                            // The default separators
-                            thousandsSeparator: '',
-                            decimalSeparator: '.'
-                        }
-                    }
-                },
-                'data[telephone][1s]': {
-                    validators: {
-                        notEmpty: {
-                            message: 'The block is required'
-                        },
-                        numeric: {
-                            message: 'The value is not a number',
-                            // The default separators
-                            thousandsSeparator: '',
-                            decimalSeparator: '.'
-                        }
-                    }
-                }
-            }
-        });
-</script>
 @endsection

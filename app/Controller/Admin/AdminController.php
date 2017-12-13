@@ -78,7 +78,7 @@ class AdminController {
 //            ),
             array(
                 'path' => 'admin/config',
-                'label' => 'Price Manager',
+                'label' => 'Config System',
                 'icon' => 'cogs'
             ),
         ));
