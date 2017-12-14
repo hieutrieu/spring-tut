@@ -42,9 +42,8 @@ class TestController extends AdminController
         ];
         debug('<h1>Co dinh Ha Noi (Noi hat)</h1>');
         foreach ($phones as $phone => $sec) {
-            debug("Phone: {$phone} --- Thoi gian {$sec} (s)");
             $phone_charge = PhoneCharge::getInstance($this->config)->phone_charged($phone, $sec);
-            debug("Cost: {$phone_charge} (vnd)");
+            debug("Thoi gian {$sec} (s): Cost: {$phone_charge} (vnd)");
             debug("==============================================================================================");
         }
         $phones = [
@@ -84,9 +83,8 @@ class TestController extends AdminController
         ];
         debug('<h1>Di dong</h1>');
         foreach ($phones as $phone => $sec) {
-            debug("Phone: {$phone} --- Thoi gian {$sec} (s)");
             $phone_charge = PhoneCharge::getInstance($this->config)->phone_charged($phone, $sec);
-            debug("Cost: {$phone_charge} (vnd)");
+            debug("Thoi gian {$sec} (s): Cost: {$phone_charge} (vnd)");
             debug("==============================================================================================");
         }
 
@@ -356,9 +354,8 @@ class TestController extends AdminController
         ];
         debug('<h1>Co dinh (Lien tinh)</h1>');
         foreach ($phones as $phone => $sec) {
-            debug("Phone: {$phone} --- Thoi gian {$sec} (s)");
             $phone_charge = PhoneCharge::getInstance($this->config)->phone_charged($phone, $sec);
-            debug("Cost: {$phone_charge} (vnd)");
+            debug("Thoi gian {$sec} (s): Cost: {$phone_charge} (vnd)");
             debug("==============================================================================================");
         }
         exit();
