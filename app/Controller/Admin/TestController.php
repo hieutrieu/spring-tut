@@ -18,6 +18,7 @@ class TestController extends AdminController
     public function index()
     {
         $phones = [
+            '80808' => 1,
             // Co dinh Ha Noi
             '02437197965' => 123,
             '02438283841' => 12,

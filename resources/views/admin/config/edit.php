@@ -4,6 +4,21 @@
     <div class="box box-primary">
         <div class="box-body">
             <fieldset>
+                <legend>NỘI BỘ</legend>
+                <div class="form-group clearfix">
+                    <div class="col-lg-4 col-md-4">
+                        <label>Chiều dài tối đa của số gọi tới</label>
+                    </div>
+                    <div class="col-lg-8 col-md-8">
+                        <input name="data[phone][local][max_length]" class="form-control" placeholder="" value="{{isset($data['phone'])?$data['phone']['local']['max_length']:6}}">
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="box box-primary">
+        <div class="box-body">
+            <fieldset>
                 <div class="col-lg-6">
                     <legend class="">DI ĐỘNG - Nội mạng</legend>
                     <div class="form-group clearfix">
@@ -56,6 +71,27 @@
                         <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
                             <input name="data[mobilephone][km][1p]" class="form-control required" placeholder="" value="{{isset($data['mobilephone'])?$data['mobilephone']['km']['1p']:0}}">
                         </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="box-body">
+            <fieldset>
+                <legend>DI ĐỘNG - Sử dụng đầu số nội mạng (Sử dụng dấu ',' để phân biệt đầu số)</legend>
+                <div class="form-group clearfix">
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                        <label>Đầu số nội mạng</label>
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                        <input name="data[mobilephone][nm][codes]" class="form-control" placeholder="" value="{{isset($data['mobilephone'])?$data['mobilephone']['nm']['codes']:''}}">
+                    </div>
+                </div>
+                <div class="form-group clearfix">
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                        <label>Đầu số khác mạng</label>
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                        <input name="data[mobilephone][km][codes]" class="form-control" placeholder="" value="{{isset($data['mobilephone'])?$data['mobilephone']['km']['codes']:''}}">
                     </div>
                 </div>
             </fieldset>
@@ -120,31 +156,6 @@
                 </div>
             </fieldset>
         </div>
-    </div>
-    <div class="box box-primary">
-        <div class="box-body">
-            <fieldset>
-                <legend>DI ĐỘNG - Sử dụng đầu số nội mạng (Sử dụng dấu ',' để phân biệt đầu số)</legend>
-                <div class="form-group clearfix">
-                    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-                        <label>Đầu số nội mạng</label>
-                    </div>
-                    <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
-                        <input name="data[first_mobiphone][nm]" class="form-control" placeholder="" value="{{isset($data['first_mobiphone'])?$data['first_mobiphone']['nm']:''}}">
-                    </div>
-                </div>
-                <div class="form-group clearfix">
-                    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-                        <label>Đầu số khác mạng</label>
-                    </div>
-                    <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
-                        <input name="data[first_mobiphone][km]" class="form-control" placeholder="" value="{{isset($data['first_mobiphone'])?$data['first_mobiphone']['km']:''}}">
-                    </div>
-                </div>
-            </fieldset>
-        </div>
-    </div>
-    <div class="box box-primary">
         <div class="box-body">
             <fieldset>
                 <legend>CỐ ĐỊNH - Sử dụng đầu số nội mạng (Sử dụng dấu ',' để phân biệt đầu số)</legend>
@@ -153,27 +164,27 @@
                         <label>Đầu số nội mạng</label>
                     </div>
                     <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
-                        <input name="data[first_telephone][nm]" class="form-control" placeholder="" value="{{isset($data['first_telephone'])?$data['first_telephone']['nm']:''}}">
+                        <input name="data[telephone][nm][codes]" class="form-control" placeholder="" value="{{isset($data['telephone'])?$data['telephone']['nm']['codes']:''}}">
                     </div>
                 </div>
             </fieldset>
         </div>
-    </div>
-    <div class="box box-primary">
         <div class="box-body">
             <fieldset>
-                <legend>CỐ ĐỊNH NỘI HẠT</legend>
-                <div class="form-group clearfix">
-                    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                <legend>CỐ ĐỊNH - Nội hạt</legend>
+                <div class="clearfix">
+                    <div class="col-sm-6 col-xs-6">
                         <label>Chọn tỉnh (thành phố)</label>
-                    </div>
-                    <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
-                        <select name="data[area_code]" class="form-control">
+                        <select name="data[telephone][nh][code]" class="form-control">
                             @foreach($provinces as $area_code => $province)
-                            <option value="{{$area_code}}" {{isset($data['area_code']) && $data['area_code'] == $area_code?'selected':''}}>{{$province}}</option>
+                            <option value="{{$area_code}}" {{isset($data['telephone']['nh']) && $data['telephone']['nh']['code'] == $area_code?'selected':''}}>{{$province}}</option>
                             @endforeach
                         </select>
                     </div>
+                    <div class="col-sm-6 col-xs-6">
+                        <label>Đơn giá</label>
+                        <input name="data[telephone][nh][price]" class="form-control" placeholder="" value="{{isset($data['telephone'])?$data['telephone']['nh']['price']:220}}">
+                    </div
                 </div>
             </fieldset>
         </div>

@@ -5,13 +5,13 @@ namespace App\Libraries;
  * User: HIEU TRIEU
  * Date: 10/12/2017
  * Time: 10:03 AM
- * c? ??nh --> c? ??nh cùng m?ng, n?i h?t
- * c? ??nh --> c? ??nh khác m?ng, n?i h?t
- * c? ??nh --> c? ??nh cùng m?ng, liên t?nh
- * c? ??nh --> c? ??nh khác m?ng, liên t?nh
- * c? ??nh --> di ??ng n?i m?ng
- * c? ??nh --> di ??ng ngo?i m?ng
- * c? ??nh --> qu?c t? (di d?ng hay c? ??nh qu?c t? gi?ng nhau)
+ * co dinh --> co dinh cung mang, noi hat
+ * co dinh --> co dinh khac mang, noi hat
+ * co dinh --> co dinh cung mang, lien tinh
+ * co dinh --> co dinh khac mang, lien tinh
+ * co dinh --> di dong noi mang
+ * co dinh --> di dong ngoai mang
+ * co dinh --> quoc te (di dong hay co dinh quoc te la giong nhau)
  */
 class Phone
 {
@@ -37,7 +37,7 @@ class Phone
 
     public function set($phone_number)
     {
-        $this->phone_number = $phone_number;
+        $this->phone_number = str_replace(array('-', '.', ' '), '', $phone_number);
     }
 
     /**
@@ -49,19 +49,32 @@ class Phone
      **/
     public function parser_phone_number()
     {
-        $is_international = $this->is_call_international();
+
+        $is_local = $this->is_call_local();
+        $is_international = $is_local ? 0 : $this->is_call_international();
         $is_mobile = $is_international ? 0 : $this->is_call_mobile();
         $is_inside_province = $is_mobile ? 0 : $this->is_call_inside_province();
         $phone_parser = [
+            'NB' => $is_local, // Quoc te
             'QT' => $is_international, // Quoc te
             'DD' => $is_mobile, // Di dong
             'NH' => $is_inside_province, // Noi hat
             'NM' => $this->is_call_inside_network($is_inside_province), // Noi mang
         ];
-        $this->test_dauso($phone_parser, $this->phone_number);
+        $this->test_dauso($phone_parser);
         return $phone_parser;
     }
 
+    /**
+     * Goi noi bo
+     **/
+    private function is_call_local()
+    {
+        if (strlen($this->phone_number) <= $this->config['phone']['local']['max_length']) {
+            return 1;
+        }
+        return 0;
+    }
     /**
      * Goi quoc te
      **/
@@ -85,7 +98,7 @@ class Phone
      **/
     private function is_call_inside_province()
     {
-        $area_code = $this->config['area_code'];
+        $area_code = $this->config['telephone']['nh']['code'];
         if (preg_match("/^\+?(84|0{$area_code})/", $this->phone_number, $matches)) {
             return 1;
         }
@@ -97,16 +110,16 @@ class Phone
      **/
     private function is_call_mobile()
     {
-        if (trim($this->config['first_mobiphone']['nm']) != '') {
-            $firstNumberMobiles = array_map('trim', explode(',', $this->config['first_mobiphone']['nm']));
+        if (trim($this->config['mobilephone']['nm']['codes']) != '') {
+            $firstNumberMobiles = array_map('trim', explode(',', $this->config['mobilephone']['nm']['codes']));
             foreach ($firstNumberMobiles as $firstNumberMobile) {
                 if (preg_match("/^\+?(84|0{$firstNumberMobile})/", $this->phone_number, $matches)) {
                     return 1;
                 }
             }
         }
-        if (trim($this->config['first_mobiphone']['km']) != '') {
-            $firstNumberMobiles = array_map('trim', explode(',', $this->config['first_mobiphone']['km']));
+        if (trim($this->config['mobilephone']['km']['codes']) != '') {
+            $firstNumberMobiles = array_map('trim', explode(',', $this->config['mobilephone']['km']['codes']));
             foreach ($firstNumberMobiles as $firstNumberMobile) {
                 if (preg_match("/^\+?(84|0{$firstNumberMobile})/", $this->phone_number, $matches)) {
                     return 2;
@@ -122,9 +135,9 @@ class Phone
      **/
     private function is_call_inside_network($is_inside_province)
     {
-        $firstNumberTelephones = array_map('trim', explode(',', $this->config['first_telephone']['nm']));
+        $firstNumberTelephones = array_map('trim', explode(',', $this->config['telephone']['nm']['codes']));
         if ($is_inside_province) {
-            $first_pattern = strval($this->config['area_code']);
+            $first_pattern = strval($this->config['telephone']['nh']['code']);
         } else {
             $first_pattern = "[0-9]{1,3}";
         }
@@ -142,29 +155,33 @@ class Phone
      * @param $phone_parser
      * @param $phone_number
      */
-    public function test_dauso($phone_parser, $phone_number)
+    public function test_dauso($phone_parser)
     {
-        $t = ['Phone_number' => "Phone: " . $phone_number,];
-        if ($phone_parser['QT']) {
-            $t['QT'] = "Goi quoc te voi khu vuc: " . $phone_parser['QT'];
-        } else {
-            if ($phone_parser['DD'] == 1) {
-                $t['DD'] = "Goi di dong --- Goi noi mang";
-            } elseif ($phone_parser['DD'] == 2) {
-                $t['DD'] = "Goi di dong --- Goi ngoai mang";
+        $t = ['Phone_number' => "Phone: " . $this->phone_number];
+        if ($phone_parser['NB'] == 0) {
+            if ($phone_parser['QT']) {
+                $t['QT'] = "Quoc te - khu vuc: " . $phone_parser['QT'];
             } else {
-                if ($phone_parser['NH']) {
-                    $t['NH'] = "Goi noi hat ";
+                if ($phone_parser['DD'] == 1) {
+                    $t['DD'] = "Di dong - Noi mang";
+                } elseif ($phone_parser['DD'] == 2) {
+                    $t['DD'] = "Di dong - Ngoai mang";
                 } else {
-                    $t['NH'] = "Goi lien tinh";
-                }
-                if ($phone_parser['NM']) {
-                    $t['NM'] = "Goi noi mang ";
-                } else {
-                    $t['NM'] = "Goi ngoai mang";
+                    if ($phone_parser['NH']) {
+                        $t['NH'] = "Noi hat ";
+                    } else {
+                        $t['NH'] = "Lien tinh";
+                    }
+                    if ($phone_parser['NM']) {
+                        $t['NM'] = "Noi mang";
+                    } else {
+                        $t['NM'] = "Ngoai mang";
+                    }
                 }
             }
+        } else {
+            $t['NB'] = "Noi bo";
         }
-        debug(implode(' --- ', $t));
+        debug(implode(' - ', $t));
     }
 }

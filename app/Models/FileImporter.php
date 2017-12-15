@@ -11,38 +11,14 @@ use Framework\Config;
 use Framework\DB\Exception\DBException;
 use Framework\Exception\FrameworkException;
 use League\Csv\Reader;
-use App\Libraries\Phone;
+use App\Libraries\PhoneCharge;
 
 class FileImporter
 {
     private static  $instance=null;
-	protected $prices = array(
-		'mobilephone' =>
-			array (
-				'6s' => 0,
-				'1s' => 0,
-			),
-		'telephone' =>
-			array (
-				'6s' => 0,
-				'1s' => 0,
-			),
-	);
-	const FIRST_NUMBER_MOBILES = array(
-		120,121,122,126,128,89,90,93,						// MobiFone
-		123,124,125,127,129,88,91,94,						// Vinaphone
-		162,163,164,165,166,167,168,169,868,96,97,98,		// Viettel
-		186,188,92,											// Vietnamobile
-		95, 												// S-Fone
-		992, 												// VSAT
-		199,993,994,995,996,997,							// Gmobile (Beeline)
-		998,999, 											// Indochina Telecom
-	);
-
 	public function __construct()
 	{
-		$this->prices = config('prices');
-        debug(Phone::getInstance('0837700968')->parser_phone_number(),1);
+		$this->config = config('prices');
 	}
 
 	public static function getInstance()
@@ -102,7 +78,8 @@ class FileImporter
 						}
 					} catch (\Exception $e) {}
 				}
-				$actualPrice = $this->getPrice($toNumber, $duration);
+//				$actualPrice = $this->getPrice($toNumber, $duration);
+				$actualPrice = PhoneCharge::getInstance($this->config)->phone_charged($toNumber, $duration);
 				$calledAt = date('Y-m-d h:i:s', $calledAt != '' ? $calledAt : 0);
                 $data[] = array (
                     "user_id"=>isset($currentUser)?$currentUser->id:-1,
@@ -114,13 +91,13 @@ class FileImporter
                     "called_at"=> $calledAt,
                     "created_at"=>array('now()')
                 );
-				if(is_object($currentUser)) {
-					$userBefore = array(
-						'monthly_used_cost' => $actualPrice,
-//						'monthly_used_cost' => $currentUser->monthly_used_cost - $actualPrice,
-					);
-					Users::getInstance()->update($userBefore, array('id' => $currentUser->id));
-				}
+//				if(is_object($currentUser)) {
+//					$userBefore = array(
+//						'monthly_used_cost' => $actualPrice,
+////						'monthly_used_cost' => $currentUser->monthly_used_cost - $actualPrice,
+//					);
+//					Users::getInstance()->update($userBefore, array('id' => $currentUser->id));
+//				}
             }
 			if(count($data)) {
 				$checkResult = CallHistory::getInstance()->inserts(array_keys($data[0]), $data);
