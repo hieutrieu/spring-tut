@@ -68,6 +68,23 @@ class PhoneCharge
      */
     public function amount_mobile($is_noimang, $s)
     {
+        //x = (t/a*60)*Block1' + 1*Block6s + (t-a*60-6)*Block1s
+        $key = $is_noimang == 1 ? 'nm' : 'km';
+        $m = floor($s / 60);
+        $block1m = $m * $this->config['mobilephone'][$key]['1p'];
+
+        $first_60 = $s - $m*60;
+        $block6s = $this->config['mobilephone'][$key]['6s'];
+        $block1s = 0;
+        if ($first_60 > 6) {
+            $block1s = ($first_60 - 6) * $this->config['mobilephone'][$key]['1s'];
+        }
+        return $block1s + $block6s + $block1m;
+    }
+
+    public function amount_mobile_($is_noimang, $s)
+    {
+        //x = (t/a*60)*Block1' + 1*Block6s + (t-a*60-6)*Block1s
         $key = $is_noimang == 1 ? 'nm' : 'km';
         $first_60 = ($s <= 60) ? $s : 60;
         $s -= $first_60;
