@@ -69,13 +69,15 @@ class PhoneCharge
     public function amount_mobile($is_noimang, $s)
     {
         //x = (t/a*60)*Block1' + 1*Block6s + (t-a*60-6)*Block1s
+        $block6s = $block1s = $block1m = 0;
         $key = $is_noimang == 1 ? 'nm' : 'km';
         $m = floor($s / 60);
         $block1m = $m * $this->config['mobilephone'][$key]['1p'];
 
         $first_60 = $s - $m*60;
-        $block6s = $this->config['mobilephone'][$key]['6s'];
-        $block1s = 0;
+        if ($first_60 > 0) {
+            $block6s = $this->config['mobilephone'][$key]['6s'];
+        }
         if ($first_60 > 6) {
             $block1s = ($first_60 - 6) * $this->config['mobilephone'][$key]['1s'];
         }
@@ -105,20 +107,18 @@ class PhoneCharge
             $m = ceil($s / 60);
             $cost = $m * $this->config['telephone']['nh']['price'];
         } else {
-            $first_60 = ($s <= 60) ? $s : 60;
-            $s -= $first_60;
-            if ($is_inside_network) {
-                $key = 'nm';
-            } else {
-                $key = 'km';
+            $block6s = $block1s = $block1m = 0;
+            $key = $is_inside_network == 1 ? 'nm' : 'km';
+            $m = floor($s / 60);
+            $block1m = $m * $this->config['telephone'][$key]['1p'];
+
+            $first_60 = $s - $m*60;
+            if ($first_60 > 0) {
+                $block6s = $this->config['telephone'][$key]['6s'];
             }
-            $block6s = $this->config['telephone'][$key]['6s'];
-            $block1s = 0;
             if ($first_60 > 6) {
                 $block1s = ($first_60 - 6) * $this->config['telephone'][$key]['1s'];
             }
-            $m = ceil($s / 60);
-            $block1m = $m * $this->config['telephone'][$key]['1p'];
             $cost = $block1s + $block6s + $block1m;
         }
         return $cost;
