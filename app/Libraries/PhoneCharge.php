@@ -33,23 +33,21 @@ class PhoneCharge
     public function phone_charged($phone_number, $seconds)
     {
         $seconds = intval($seconds);
-        if ($seconds <= 0) {
-            return 0;
-        }
-        $this->phone_obj->set($phone_number);
-        $phone_parser = $this->phone_obj->parser_phone_number();
-        if ($phone_parser['NB'] == 0) {
-            if ($phone_parser['QT']) {
-                $cost = $this->amount_international($phone_parser['QT'], $seconds);
-            } else {
-                if ($phone_parser['DD']) {
-                    $cost = $this->amount_mobile($phone_parser['DD'], $seconds);
+        $cost = 0;
+        if ($seconds > 0) {
+            $this->phone_obj->set($phone_number);
+            $phone_parser = $this->phone_obj->parser_phone_number();
+            if ($phone_parser['NB'] == 0) {
+                if ($phone_parser['QT']) {
+                    $cost = $this->amount_international($phone_parser['QT'], $seconds);
                 } else {
-                    $cost = $this->amount_province($phone_parser['NH'], $phone_parser['NM'], $seconds);
+                    if ($phone_parser['DD']) {
+                        $cost = $this->amount_mobile($phone_parser['DD'], $seconds);
+                    } else {
+                        $cost = $this->amount_province($phone_parser['NH'], $phone_parser['NM'], $seconds);
+                    }
                 }
             }
-        } else {
-            $cost = 0;
         }
         return $cost;
     }

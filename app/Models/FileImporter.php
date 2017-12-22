@@ -60,8 +60,6 @@ class FileImporter
                 $duration=$duration_key===false?"0":$row[$duration_key];
 				$email=$email_key===false?" ":$row[$email_key];
 				$username = $username != '' ? $username : 'Autonomous';
-				debug($fromNumber);
-				debug($username);
 				$currentUser=Users::getInstance()->getOneObjectByField(array('username' => $username, 'phone_number' => $fromNumber));
 //				$currentUser=Users::getInstance()->getOnceItem("phone_number LIKE '%($fromNumber)%'");
 				if(!is_object($currentUser)) {
@@ -75,10 +73,10 @@ class FileImporter
 							"created_at"=>array('now()')
 						);
 						$checkInsert = Users::getInstance()->insert($userData);
-						if($checkInsert) {
-                            $currentUser=Users::getInstance()->getOneObjectByField(array('username' => $username, 'phone_number' => $fromNumber));
+//						if($checkInsert) {
+//                            $currentUser=Users::getInstance()->getOneObjectByField(array('username' => $username, 'phone_number' => $fromNumber));
 //							$currentUser=Users::getInstance()->getOneObjectByField(array("phone_number"=>$fromNumber));
-						}
+//						}
 					} catch (\Exception $e) {}
 				}
 //				$actualPrice = $this->getPrice($toNumber, $duration);
