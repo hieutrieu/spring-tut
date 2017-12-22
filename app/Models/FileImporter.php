@@ -59,12 +59,15 @@ class FileImporter
                 $calledAt=$dateTimeConnect_key===false?"":$row[$dateTimeConnect_key];
                 $duration=$duration_key===false?"0":$row[$duration_key];
 				$email=$email_key===false?" ":$row[$email_key];
+				$username = trim($username) != '' ? $username : 'Autonomous';
+				debug($fromNumber);
+				debug($username);
 				$currentUser=Users::getInstance()->getOneObjectByField(array('username' => $username, 'phone_number' => $fromNumber));
 //				$currentUser=Users::getInstance()->getOnceItem("phone_number LIKE '%($fromNumber)%'");
 				if(!is_object($currentUser)) {
 					try {
 						$userData = array (
-							"name"=>$username != '' ? $username : 'Autonomous',
+							"name"=>$username,
 							"username"=>$username,
 							"phone_number"=>$fromNumber,
 							"email"=>$email,
