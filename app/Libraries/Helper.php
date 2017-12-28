@@ -91,6 +91,10 @@ class Helper
 
     public static function formatCurrency($money, $decimals = 2, $showUnit = 1) {
         $unit = $showUnit ? self::CURRENCY : '';
-        return number_format($money, $decimals) .' '.  $unit;
+        if ($showUnit) {
+            return number_format($money, $decimals) . ' ' . $unit;
+        } else {
+            return number_format($money, $decimals);
+        }
     }
 }

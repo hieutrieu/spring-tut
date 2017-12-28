@@ -92,7 +92,7 @@ class CallHistory extends ModelBase
             } else {
                 $where = '';
             }
-            $sql = " SELECT user_id, SUM(cost) total_cost, SUM(duration) total_duration
+            $sql = "SELECT user_id, SUM(cost) total_cost, SUM(duration) total_duration
                 FROM `{$this->tableName}`
                 {$where}
                 GROUP BY user_id

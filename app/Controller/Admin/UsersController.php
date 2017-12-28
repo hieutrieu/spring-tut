@@ -38,9 +38,9 @@ class UsersController extends AdminController
         $condition = implode(" AND ", $condition);
         $items = Users::getInstance()->getAll($condition, $page, 100, 'name DESC, phone_number ASC');
         $uids = [];
-        foreach ($items['items'] as &$item) {
-            $item['total_cost'] = 0;
-            $item['total_duration'] = 0;
+        foreach ($items['items'] as $ix => $item) {
+            $items['items'][$ix]['total_cost'] = 0;
+            $items['items'][$ix]['total_duration'] = 0;
             $uids[$item['id']] = $item['id'];
         }
         if (count($uids)) {
@@ -54,15 +54,14 @@ class UsersController extends AdminController
             $conditionsDate[] = "DATE(called_at) <= '{$conditionDate[1]}'";
             $conditionsDate = implode(" AND ", $conditionsDate);
             $callHistories = CallHistory::getInstance()->getAllHistoryByGroup("user_id IN({$uids}) and {$conditionsDate}");
-
-            foreach ($items['items'] as &$item) {
-                foreach ($callHistories['items'] as $ix => $citem) {
-                    if ($item['id'] == $citem['user_id']) {
-                        $item['total_cost'] = $citem['total_cost'];
-                        $item['total_duration'] = $citem['total_duration'];
-                        unset($callHistories['items'][$ix]);
-                        break;
-                    }
+            $users_prices = array();
+            foreach ($callHistories['items'] as $citem) {
+                $users_prices[$citem['user_id']] = $citem;
+            }
+            foreach($items['items'] as $idx => $item){
+                if (isset($users_prices[$item['id']])) {
+                    $items['items'][$idx]['total_cost'] = $users_prices[$item['id']]['total_cost'];
+                    $items['items'][$idx]['total_duration'] = $users_prices[$item['id']]['total_duration'];
                 }
             }
         }
@@ -89,14 +88,13 @@ class UsersController extends AdminController
         $condition = implode(" AND ", $condition);
         $items = Users::getInstance()->getAll($condition, 0, 9999999999, 'name ASC, phone_number ASC');
         $uids = [];
-        foreach ($items['items'] as &$item) {
-            $item['total_cost'] = 0;
-            $item['total_duration'] = 0;
+        foreach ($items['items'] as $ix => $item) {
+            $items['items'][$ix]['total_cost'] = 0;
+            $items['items'][$ix]['total_duration'] = 0;
             $uids[$item['id']] = $item['id'];
         }
         if (count($uids)) {
             $uids = implode(',', $uids);
-            $conditionsDate[] = "1 = 1";
             if ($search_date == '') {
                 $search_date = date("Y/m/d", strtotime("first day of this month")) . ' - ' . date("Y/m/d", strtotime("last day of this month"));
             }
@@ -105,15 +103,14 @@ class UsersController extends AdminController
             $conditionsDate[] = "DATE(called_at) <= '{$conditionDate[1]}'";
             $conditionsDate = implode(" AND ", $conditionsDate);
             $callHistories = CallHistory::getInstance()->getAllHistoryByGroup("user_id IN({$uids}) and {$conditionsDate}");
-
-            foreach ($items['items'] as &$item) {
-                foreach ($callHistories['items'] as $ix => $citem) {
-                    if ($item['id'] == $citem['user_id']) {
-                        $item['total_cost'] = $citem['total_cost'];
-                        $item['total_duration'] = $citem['total_duration'];
-                        unset($callHistories['items'][$ix]);
-                        break;
-                    }
+            $users_prices = array();
+            foreach ($callHistories['items'] as $citem) {
+                $users_prices[$citem['user_id']] = $citem;
+            }
+            foreach($items['items'] as $idx => $item){
+                if (isset($users_prices[$item['id']])) {
+                    $items['items'][$idx]['total_cost'] = $users_prices[$item['id']]['total_cost'];
+                    $items['items'][$idx]['total_duration'] = $users_prices[$item['id']]['total_duration'];
                 }
             }
         }
@@ -122,36 +119,56 @@ class UsersController extends AdminController
 
         // Add Data in your file
         //header file
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', 'Date: ' . $search_date);
-        $objPHPExcel->setActiveSheetIndex(0)
-            ->setCellValue('A1', 'STT ')
-            ->setCellValue('B1', 'Name')
-            ->setCellValue('C1', 'Phone Number')
-            ->setCellValue('D1', 'Total Duration (s)')
-            ->setCellValue('E1', 'Total Cost (VND)')
-            ->setCellValue('F1', 'Email');
-        $objPHPExcel->getActiveSheet()->getStyle("D1")->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
-        $objPHPExcel->getActiveSheet()->getStyle("E1")->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
-        //fill data to file
-        $row_index = 1;
-        $i = 1;
-        foreach ($items["items"] as $item) {
+        $sds = explode('-', $search_date);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B1', 'Start date:');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C1', $sds[0]);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D1', 'End date:');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E1', $sds[1]);
 
+        $row_index = 3;
+        $objPHPExcel->setActiveSheetIndex(0)
+            ->setCellValue('A' . ($row_index), 'STT ')
+            ->setCellValue('B' . ($row_index), 'Name')
+            ->setCellValue('C' . ($row_index), 'Phone Number')
+            ->setCellValue('D' . ($row_index), 'Total Duration (s)')
+            ->setCellValue('E' . ($row_index), 'Total Cost (VND)')
+            ->setCellValue('F' . ($row_index), 'Email');
+        $objPHPExcel->getActiveSheet()->getStyle("A" . ($row_index))->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle("B" . ($row_index))->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle("C" . ($row_index))->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle("D" . ($row_index))->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle("E" . ($row_index))->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle("F" . ($row_index))->getFont()->setBold(true);
+        //fill data to file
+        $i = 1;
+        for ($j = 0; $j < count($items['items']); $j++) {
+            $item = $items['items'][$j];
+            $cost = floatval($item["total_cost"]);
             $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue("A" . ($row_index + $i), $i)
                 ->setCellValue("B" . ($row_index + $i), $item["name"] . ' - ' . $item['phone_number'])
                 ->setCellValue("C" . ($row_index + $i), $item["phone_number"])
                 ->setCellValue("D" . ($row_index + $i), $item["total_duration"])
-                ->setCellValue("E" . ($row_index + $i), Helper::formatCurrency($item["total_cost"], 2, 0))
+                ->setCellValue("E" . ($row_index + $i), $cost)
                 ->setCellValue("F" . ($row_index + $i), $item["email"]);
 
             //format cell
-//            $objPHPExcel->getActiveSheet()->getStyle("F" . ($row_index + $i))->getNumberFormat()->setFormatCode('#,##0.00');
 //            $objPHPExcel->getActiveSheet()->getStyle("G" . ($row_index + $i))->getNumberFormat()->setFormatCode('#,##0.00');
-            $objPHPExcel->getActiveSheet()->getStyle("D" . ($row_index + $i))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-            $objPHPExcel->getActiveSheet()->getStyle("E" . ($row_index + $i))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+            $objPHPExcel->getActiveSheet()->getStyle("A" . ($row_index + $i))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objPHPExcel->getActiveSheet()->getStyle("D" . ($row_index + $i))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+            $objPHPExcel->getActiveSheet()->getStyle("E" . ($row_index + $i))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
             $i += 1;
         }
+        $start_row = $row_index + 1;
+        $end_row = $row_index + $i;
+        $objPHPExcel->setActiveSheetIndex(0)
+            ->setCellValue("D" . ($row_index + $i + 1), "=SUM(D{$start_row}:D{$end_row})")
+            ->setCellValue("E" . ($row_index + $i + 1), "=SUM(E{$start_row}:E{$end_row})");
+        $objPHPExcel->getActiveSheet()->getStyle("D" . ($row_index + $i + 1))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+        $objPHPExcel->getActiveSheet()->getStyle("E" . ($row_index + $i + 1))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+        $objPHPExcel->getActiveSheet()->getStyle("D" . ($row_index + $i + 1))->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle("E" . ($row_index + $i + 1))->getFont()->setBold(true);
+
         //set with size cell auto
         $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
@@ -170,11 +187,10 @@ class UsersController extends AdminController
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $fileName . '.xls"');
         header('Cache-Control: max-age=0');
-
         // Do your stuff here
 
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-
+//        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'HTML');
         // This line will force the file to download
         $objWriter->save('php://output');
         exit();
