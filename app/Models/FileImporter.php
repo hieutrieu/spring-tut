@@ -62,36 +62,40 @@ class FileImporter
 				$username = $username != '' ? $username : 'Autonomous';
 				$currentUser=Users::getInstance()->getOneObjectByField(array('username' => $username, 'phone_number' => $fromNumber));
 //				$currentUser=Users::getInstance()->getOnceItem("phone_number LIKE '%($fromNumber)%'");
-				if(!is_object($currentUser)) {
-					try {
-						$userData = array (
-							"name"=>$username,
-							"username"=>$username,
-							"phone_number"=>$fromNumber,
-							"email"=>$email,
-							"monthly_limited_cost"=>0,
-							"created_at"=>array('now()')
-						);
-						$checkInsert = Users::getInstance()->insert($userData);
+//				$actualPrice = $this->getPrice($toNumber, $duration);
+				if(strlen($fromNumber) > 6 && $duration == 0) {
+					echo strlen($fromNumber) . ' - ' . $duration;
+				} else {
+					if(!is_object($currentUser)) {
+						try {
+							$userData = array (
+								"name"=>$username,
+								"username"=>$username,
+								"phone_number"=>$fromNumber,
+								"email"=>$email,
+								"monthly_limited_cost"=>0,
+								"created_at"=>array('now()')
+							);
+							$checkInsert = Users::getInstance()->insert($userData);
 //						if($checkInsert) {
 //                            $currentUser=Users::getInstance()->getOneObjectByField(array('username' => $username, 'phone_number' => $fromNumber));
 //							$currentUser=Users::getInstance()->getOneObjectByField(array("phone_number"=>$fromNumber));
 //						}
-					} catch (\Exception $e) {}
+						} catch (\Exception $e) {}
+					}
+					$actualPrice = PhoneCharge::getInstance($this->config)->phone_charged($toNumber, $duration);
+					$calledAt = date('Y-m-d h:i:s', $calledAt != '' ? $calledAt : 0);
+					$data[] = array(
+						"user_id" => isset($currentUser) ? $currentUser->id : -1,
+						"user_name" => $username,
+						"from_phone_number" => $fromNumber,
+						"to_phone_number" => $toNumber,
+						"duration" => $duration,
+						"cost" => $actualPrice,
+						"called_at" => $calledAt,
+						"created_at" => array('now()')
+					);
 				}
-//				$actualPrice = $this->getPrice($toNumber, $duration);
-				$actualPrice = PhoneCharge::getInstance($this->config)->phone_charged($toNumber, $duration);
-				$calledAt = date('Y-m-d h:i:s', $calledAt != '' ? $calledAt : 0);
-                $data[] = array (
-                    "user_id"=>isset($currentUser)?$currentUser->id:-1,
-                    "user_name"=>$username,
-                    "from_phone_number"=>$fromNumber,
-                    "to_phone_number"=>$toNumber,
-                    "duration"=>$duration,
-                    "cost"=>$actualPrice,
-                    "called_at"=> $calledAt,
-                    "created_at"=>array('now()')
-                );
 //				if(is_object($currentUser)) {
 //					$userBefore = array(
 //						'monthly_used_cost' => $actualPrice,
@@ -100,7 +104,7 @@ class FileImporter
 //					Users::getInstance()->update($userBefore, array('id' => $currentUser->id));
 //				}
             }
-			if(count($data)) {
+			if(isset($data) && count($data)) {
 				$checkResult = CallHistory::getInstance()->inserts(array_keys($data[0]), $data);
 				return $checkResult;
 			}
